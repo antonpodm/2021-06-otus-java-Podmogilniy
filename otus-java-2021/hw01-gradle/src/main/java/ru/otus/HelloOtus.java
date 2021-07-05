@@ -5,7 +5,7 @@ package ru.otus;
 
 import com.google.common.math.LongMath;
 
-public class SomethingFromGuava {
+public class HelloOtus {
     public static void main(String... args) {
         for (int i = 0; i < 25; i++) {
             try {

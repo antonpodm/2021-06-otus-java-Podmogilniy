@@ -17,7 +17,7 @@ shadowJar {
     archiveVersion.set('1.0')
     archiveClassifier.set('')
     manifest {
-        attributes 'Main-Class': 'ru.otus.SomethingFromGuava'
+        attributes 'Main-Class': 'ru.otus.HelloOtus'
     }
 }
 
