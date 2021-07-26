@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Tester {
 
-    private List<Method> beforeMethods = new ArrayList<>();
-    private List<Method> afterMethods = new ArrayList<>();
-    private List<Method> testMethods = new ArrayList<>();
+    private final List<Method> beforeMethods = new ArrayList<>();
+    private final List<Method> afterMethods = new ArrayList<>();
+    private final List<Method> testMethods = new ArrayList<>();
     private int testAmount = 0;
     private int successTestAmount = 0;
     private int failedTestAmount = 0;
@@ -24,16 +24,24 @@ public class Tester {
     }
 
     public void test() {
-        Method[] methods = testedClass.getMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(Before.class)) {
+        findMethods();
+        testMethods();
+        clear();
+    }
+
+    private void findMethods() {
+        for (Method method : testedClass.getMethods()) {
+            if (method.isAnnotationPresent(Test.class)) {
+                testMethods.add(method);
+            } else if (method.isAnnotationPresent(Before.class)) {
                 beforeMethods.add(method);
             } else if (method.isAnnotationPresent(After.class)) {
                 afterMethods.add(method);
-            } else if (method.isAnnotationPresent(Test.class)) {
-                testMethods.add(method);
             }
         }
+    }
+
+    private void testMethods() {
         for (Method testMethod : testMethods) {
             System.out.println("Running " + testMethod.getName());
             Object instance = ReflectionHelper.instantiate(testedClass);
@@ -44,15 +52,14 @@ public class Tester {
                 successTestAmount++;
                 System.out.println("Succeed " + testMethod.getName());
             } catch (Exception ex) {
-                System.out.println("Failed " + testMethod.getName());
                 failedTestAmount++;
+                System.out.println("Failed " + testMethod.getName());
             } finally {
                 afterMethods.forEach(method -> ReflectionHelper.callMethod(instance, method.getName()));
                 System.out.println();
             }
         }
         System.out.println(makeResult());
-        clear();
     }
 
     private void clear() {
