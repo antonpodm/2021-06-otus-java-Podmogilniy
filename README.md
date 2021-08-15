@@ -6,3 +6,4 @@
 2) Модуль hw02-generics
 3) Модуль hw03-reflection
 4) Модуль hw04-gc
+5) Модуль hw05-byteCodes
