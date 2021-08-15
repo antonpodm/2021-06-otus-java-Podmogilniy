@@ -36,6 +36,7 @@ class Ioc {
             for (Method m : methods) {
                 if (compareMethods(m, method)) {
                     System.out.println("Executed method: " + method.getName() + ", params: " + Arrays.toString(args));
+                    break;
                 }
             }
             return method.invoke(myClass, args);
@@ -46,11 +47,11 @@ class Ioc {
         return Arrays.stream(clazz.getMethods()).filter(method -> method.isAnnotationPresent(Log.class)).collect(Collectors.toList());
     }
 
-    static boolean compareMethods(Method m1, Method m2){
-        if(!m1.getName().equals(m2.getName())){
+    static boolean compareMethods(Method m1, Method m2) {
+        if (!m1.getName().equals(m2.getName())) {
             return false;
         }
-        if(!Arrays.equals(m1.getParameterTypes(), m2.getParameterTypes())){
+        if (!Arrays.equals(m1.getParameterTypes(), m2.getParameterTypes())) {
             return false;
         }
         return true;
