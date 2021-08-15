@@ -6,16 +6,18 @@ import ru.otus.aop.homework.interfaces.Log;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 class Ioc {
 
     private Ioc() {
     }
 
-    static ILog createMyClass(ILog myClass) {
+    static Object createMyClass(ILog myClass) {
         InvocationHandler handler = new DemoInvocationHandler(myClass);
-        return (ILog) Proxy.newProxyInstance(Ioc.class.getClassLoader(),
-                new Class<?>[]{ILog.class}, handler);
+
+        return Proxy.newProxyInstance(Ioc.class.getClassLoader(),
+                myClass.getClass().getInterfaces(), handler);
     }
 
     static class DemoInvocationHandler implements InvocationHandler {
@@ -27,17 +29,10 @@ class Ioc {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if(method.isAnnotationPresent(Log.class)) {
-                System.out.println("invoking method:" + method);
+            if (method.isAnnotationPresent(Log.class)) {
+                System.out.println("Executed method: " + method.getName() + ", params: " + Arrays.toString(args));
             }
             return method.invoke(myClass, args);
-        }
-
-        @Override
-        public String toString() {
-            return "DemoInvocationHandler{" +
-                    "myClass=" + myClass +
-                    '}';
         }
     }
 }
