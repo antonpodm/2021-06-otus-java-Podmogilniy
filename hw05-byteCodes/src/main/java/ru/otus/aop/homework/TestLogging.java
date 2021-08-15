@@ -6,11 +6,13 @@ import ru.otus.aop.homework.interfaces.Log;
 
 public class TestLogging implements ITestLogging, ILog {
 
+    @Log
     @Override
     public int calculation(int param1) {
         return param1 * 5;
     }
 
+    @Log
     @Override
     public int calculation(int param1, int param2) {
         return (param1 + param2) * 5;

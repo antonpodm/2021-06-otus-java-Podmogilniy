@@ -9,8 +9,8 @@ public class DynamicProxy {
 
         var testLogging = (ITestLogging) Ioc.createMyClass(new TestLogging());
 
-        testLogging.calculation(100);
-        testLogging.calculation(100, 50);
-        testLogging.calculation(100, 50, 5);
+        System.out.println(testLogging.calculation(100));
+        System.out.println(testLogging.calculation(100, 50));
+        System.out.println(testLogging.calculation(100, 50, 7));
     }
 }
