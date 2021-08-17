@@ -37,8 +37,7 @@ class Ioc {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            String currentMethodSignature = createMethodSignature(method);
-            if (methodsSignatures.stream().anyMatch(currentMethodSignature::equals)) {
+            if (methodExists(methodsSignatures, method)) {
                 System.out.println("Executed method: " + method.getName() + ", params: " + Arrays.toString(args));
             }
             return method.invoke(myClass, args);
@@ -53,5 +52,10 @@ class Ioc {
 
     static String createMethodSignature(Method m) {
         return m.getName() + Arrays.toString(m.getParameterTypes());
+    }
+
+    static boolean methodExists(List<String> methods, Method method) {
+        String currentMethodSignature = createMethodSignature(method);
+        return (methods.stream().anyMatch(currentMethodSignature::equals));
     }
 }
