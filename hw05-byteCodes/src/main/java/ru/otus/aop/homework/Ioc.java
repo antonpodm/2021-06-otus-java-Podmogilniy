@@ -6,6 +6,7 @@ import ru.otus.aop.homework.interfaces.Log;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,36 +25,33 @@ class Ioc {
 
     static class DemoInvocationHandler implements InvocationHandler {
         private final ILog myClass;
-        private final List<Method> methods;
+        private final List<String> methodsSignatures = new ArrayList<>();
 
         DemoInvocationHandler(ILog myClass) {
             this.myClass = myClass;
-            this.methods = getAnnotatedMethods(myClass.getClass());
+            getAnnotatedMethods(myClass.getClass())
+                    .stream()
+                    .map(Ioc::createMethodSignature)
+                    .forEach(methodsSignatures::add);
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            for (Method m : methods) {
-                if (compareMethods(m, method)) {
-                    System.out.println("Executed method: " + method.getName() + ", params: " + Arrays.toString(args));
-                    break;
-                }
+            String currentMethodSignature = createMethodSignature(method);
+            if (methodsSignatures.stream().anyMatch(currentMethodSignature::equals)) {
+                System.out.println("Executed method: " + method.getName() + ", params: " + Arrays.toString(args));
             }
             return method.invoke(myClass, args);
         }
     }
 
     static List<Method> getAnnotatedMethods(Class clazz) {
-        return Arrays.stream(clazz.getMethods()).filter(method -> method.isAnnotationPresent(Log.class)).collect(Collectors.toList());
+        return Arrays.stream(clazz.getMethods()).
+                filter(method -> method.isAnnotationPresent(Log.class)).
+                collect(Collectors.toList());
     }
 
-    static boolean compareMethods(Method m1, Method m2) {
-        if (!m1.getName().equals(m2.getName())) {
-            return false;
-        }
-        if (!Arrays.equals(m1.getParameterTypes(), m2.getParameterTypes())) {
-            return false;
-        }
-        return true;
+    static String createMethodSignature(Method m){
+        return  m.getName() + Arrays.toString(m.getParameterTypes());
     }
 }
