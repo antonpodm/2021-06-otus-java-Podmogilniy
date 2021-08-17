@@ -51,7 +51,7 @@ class Ioc {
                 collect(Collectors.toList());
     }
 
-    static String createMethodSignature(Method m){
-        return  m.getName() + Arrays.toString(m.getParameterTypes());
+    static String createMethodSignature(Method m) {
+        return m.getName() + Arrays.toString(m.getParameterTypes());
     }
 }
