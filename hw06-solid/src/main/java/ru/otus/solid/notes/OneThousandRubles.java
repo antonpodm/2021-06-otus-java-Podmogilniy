@@ -13,7 +13,7 @@ public class OneThousandRubles implements INote {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OneThousandRubles that = (OneThousandRubles) o;
-        return value == that.value;
+        return value == that.getValue();
     }
 
     @Override

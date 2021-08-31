@@ -13,7 +13,7 @@ public class TenRubles implements INote {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TenRubles tenRubles = (TenRubles) o;
-        return value == tenRubles.value;
+        return value == tenRubles.getValue();
     }
 
     @Override
