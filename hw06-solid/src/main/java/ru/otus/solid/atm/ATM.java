@@ -9,6 +9,7 @@ import ru.otus.solid.interfaces.IWallet;
 import java.util.Map;
 
 import static ru.otus.solid.atm.ATMHelper.isNotNull;
+import static ru.otus.solid.atm.ATMHelper.isNull;
 
 public class ATM implements IATM {
 
@@ -23,7 +24,7 @@ public class ATM implements IATM {
     public void putCash(int sumForPut) throws PutCashException {
         INote note = ATMHelper.findNote(cash, sumForPut);
         if (isNotNull(note)) {
-            IWallet wallet = cash.get(note);
+            var wallet = cash.get(note);
             if (isNotNull(wallet)) {
                 wallet.put(sumForPut);
                 cashBalance += sumForPut;
@@ -34,10 +35,10 @@ public class ATM implements IATM {
     }
 
     public Integer getCashBalance() {
-        if (cashBalance == null) {
+        if (isNull(cashBalance)) {
             var balance = 0;
             for (INote note : cash.keySet()) {
-                IWallet wallet = cash.get(note);
+                var wallet = cash.get(note);
                 var sum = wallet.getAmount() * note.getValue();
                 balance += sum;
             }
@@ -45,12 +46,13 @@ public class ATM implements IATM {
         }
         return cashBalance;
     }
+
     //Сделал выдачу упрощенной (по одной купюре) т.к. "Оптимизировать выдачу не надо."
     public void takeCash(int sumForTake) throws TakeCashException {
         if (checkPossibility(sumForTake)) {
-            INote note = ATMHelper.findNote(cash, sumForTake);
+            var note = ATMHelper.findNote(cash, sumForTake);
             if (isNotNull(note)) {
-                IWallet wallet = cash.get(note);
+                var wallet = cash.get(note);
                 if (isNotNull(wallet)) {
                     wallet.take(sumForTake);
                     cashBalance -= sumForTake;
@@ -65,12 +67,10 @@ public class ATM implements IATM {
         if (cashBalance < sumForTake) {
             return false;
         }
-        INote note = ATMHelper.findNote(cash, sumForTake);
+        var note = ATMHelper.findNote(cash, sumForTake);
         if (isNotNull(note)) {
-            IWallet wallet = cash.get(note);
-            if (isNotNull(wallet) && wallet.getAmount() > 0) {
-                return true;
-            }
+            var wallet = cash.get(note);
+            return isNotNull(wallet) && wallet.getAmount() > 0;
         }
         return false;
     }

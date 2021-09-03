@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Homework {
 
     public static void main(String[] args) {
-        ATM atm = new ATM(createBaseValues());
+        var atm = new ATM(createBaseValues());
         System.out.println("Баланс " + atm.getCashBalance());
         try {
             atm.putCash(50);
