@@ -1,6 +1,6 @@
 package ru.otus.solid.interfaces;
 
-public interface IWallet {
+public interface Wallet {
 
     int getAmount();
 

@@ -1,13 +1,13 @@
 package ru.otus.solid.atm;
 
-import ru.otus.solid.interfaces.INote;
-import ru.otus.solid.interfaces.IWallet;
+import ru.otus.solid.interfaces.Wallet;
+import ru.otus.solid.notes.Notes;
 
 import java.util.Map;
 
 public class ATMHelper {
 
-    public static INote findNote(Map<INote, IWallet> cash, int sumForTake) {
+    public static Notes findNote(Map<Notes, Wallet> cash, int sumForTake) {
         return cash.keySet()
                 .stream()
                 .filter(element -> element.getValue() == sumForTake)

@@ -1,6 +1,6 @@
 package ru.otus.solid.exceptions;
 
-public class TakeCashException extends Exception {
+public class TakeCashException extends MyException {
 
     private String exceptionMessage = "Нет возможности выдать запрашиваемую сумму";
 

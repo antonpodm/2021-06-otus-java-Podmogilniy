@@ -1,6 +1,6 @@
 package ru.otus.solid.exceptions;
 
-public class PutCashException extends Exception{
+public class PutCashException extends MyException{
 
     private String exceptionMessage = "Банкомат не поддерживает купюры такого типа";
 

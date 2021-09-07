@@ -1,4 +1,4 @@
 package ru.otus.solid.interfaces;
 
-public interface IATM {
+public interface ATM {
 }
