@@ -22,4 +22,8 @@ public class ATMHelper {
     public static boolean isNull(Object object) {
         return object == null;
     }
+
+    public static boolean isAmountValid(int amount) {
+        return amount > 0;
+    }
 }

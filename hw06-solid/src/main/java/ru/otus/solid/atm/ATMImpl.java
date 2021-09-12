@@ -11,8 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static ru.otus.solid.atm.ATMHelper.isNotNull;
-import static ru.otus.solid.atm.ATMHelper.isNull;
+import static ru.otus.solid.atm.ATMHelper.*;
 
 public class ATMImpl implements ATM {
 
@@ -25,13 +24,15 @@ public class ATMImpl implements ATM {
     }
 
     public void putCash(int sumForPut) throws PutCashException {
-        var note = ATMHelper.findNote(cash, sumForPut);
-        if (isNotNull(note)) {
-            var wallet = cash.get(note);
-            if (isNotNull(wallet)) {
-                wallet.put(sumForPut);
-                cashBalance += sumForPut;
-                return;
+        if (isAmountValid(sumForPut)) {
+            var note = ATMHelper.findNote(cash, sumForPut);
+            if (isNotNull(note)) {
+                var wallet = cash.get(note);
+                if (isNotNull(wallet)) {
+                    wallet.put(sumForPut);
+                    cashBalance += sumForPut;
+                    return;
+                }
             }
         }
         throw new PutCashException();
@@ -51,14 +52,16 @@ public class ATMImpl implements ATM {
     }
 
     public void takeCash(int sumForTake) throws TakeCashException {
-        var notes = getBestPossibleCombination(sumForTake);
-        if (isNotNull(notes)) {
-            notes.forEach(note -> {
-                var wallet = cash.get(note);
-                wallet.take(1);
-                cashBalance -= note.getValue();
-            });
-            return;
+        if (isAmountValid(sumForTake)) {
+            var notes = getBestPossibleCombination(sumForTake);
+            if (isNotNull(notes)) {
+                notes.forEach(note -> {
+                    var wallet = cash.get(note);
+                    wallet.take(1);
+                    cashBalance -= note.getValue();
+                });
+                return;
+            }
         }
         throw new TakeCashException();
     }
