@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class HistoryListenerTest {
 
     @Test
-    @Disabled
+//    @Disabled
         //надо удалить
     void listenerTest() {
         //given

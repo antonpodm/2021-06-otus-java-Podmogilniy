@@ -32,7 +32,7 @@ public class Message {
         this.field10 = field10;
         this.field11 = field11;
         this.field12 = field12;
-        this.field13 = field13;
+        this.field13 = new ObjectForMessage(field13);
     }
 
     public long getId() {
@@ -88,7 +88,7 @@ public class Message {
     }
 
     public ObjectForMessage getField13() {
-        return field13;
+        return new ObjectForMessage(field13);
     }
 
     @Override
