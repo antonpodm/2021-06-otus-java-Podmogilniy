@@ -32,7 +32,12 @@ public class Message {
         this.field10 = field10;
         this.field11 = field11;
         this.field12 = field12;
-        this.field13 = new ObjectForMessage(field13);
+
+        if (field13 != null) {
+            this.field13 = new ObjectForMessage(field13);
+        } else {
+            this.field13 = null;
+        }
     }
 
     public long getId() {

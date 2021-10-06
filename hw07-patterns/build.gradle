@@ -23,6 +23,6 @@ test {
 
 tasks.withType(JavaCompile) {
     options.with {
-        encoding = 'UTF-8'
+        encoding = 'WINDOWS-1251'
     }
 }

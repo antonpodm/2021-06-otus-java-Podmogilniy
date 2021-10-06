@@ -10,7 +10,9 @@ public class ObjectForMessage {
     }
 
     public ObjectForMessage(ObjectForMessage foreign) {
-        this.data = List.copyOf(foreign.getData());
+        if (foreign != null && foreign.getData() != null) {
+            this.data = List.copyOf(foreign.getData());
+        }
     }
 
     public List<String> getData() {

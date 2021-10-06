@@ -15,6 +15,6 @@ public class HistoryListener implements Listener, HistoryReader {
 
     @Override
     public Optional<Message> findMessageById(long id) {
-        return Optional.of(HistoryCache.getMessage(id));
+        return Optional.ofNullable(HistoryCache.getMessage(id));
     }
 }
