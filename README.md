@@ -8,3 +8,4 @@
 4) Модуль hw04-gc
 5) Модуль hw05-byteCodes
 6) Модуль hw06-solid
+7) Модуль hw07-patterns
