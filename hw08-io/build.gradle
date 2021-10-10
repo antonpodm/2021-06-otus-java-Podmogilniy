@@ -9,6 +9,8 @@ dependencies {
 
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'javax.json:javax.json-api'
+    implementation 'com.google.guava:guava'
+    implementation 'com.google.code.gson:gson'
 
     testImplementation ('org.junit.jupiter:junit-jupiter-api')
     testImplementation ('org.junit.jupiter:junit-jupiter-engine')
