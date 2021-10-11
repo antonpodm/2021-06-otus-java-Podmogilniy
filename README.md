@@ -9,3 +9,5 @@
 5) Модуль hw05-byteCodes
 6) Модуль hw06-solid
 7) Модуль hw07-patterns
+8) Модуль hw08-io
+9) Модуль hw09-jdbc
