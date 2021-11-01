@@ -3,7 +3,6 @@ package ru.otus.jdbc.mapper;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.repository.DataTemplateException;
 import ru.otus.core.repository.executor.DbExecutor;
-import ru.otus.crm.model.Client;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
 
     @Override
     public Optional<T> findById(Connection connection, long id) {
-        return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectByIdSql(), List.of(id), rs -> {
+        return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectByFieldSql(), List.of(id), rs -> {
             try {
                 if (rs.next()) {
                     return rowDataMapper.buildInstance(rs);

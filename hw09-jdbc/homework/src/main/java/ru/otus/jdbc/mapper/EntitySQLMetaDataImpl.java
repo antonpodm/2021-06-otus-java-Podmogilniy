@@ -20,7 +20,7 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
     }
 
     @Override
-    public String getSelectByIdSql() {
+    public String getSelectByFieldSql() {
         return String.format(
                 "SELECT %s FROM %s WHERE %s = ?",
                 buildAllFieldsIncludeId(),
