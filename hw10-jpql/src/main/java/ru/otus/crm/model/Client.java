@@ -3,6 +3,7 @@ package ru.otus.crm.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "client")
@@ -16,12 +17,10 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "address_id")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "client_id")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Phone> phones;
 
     public Client() {
@@ -43,7 +42,11 @@ public class Client implements Cloneable {
 
     @Override
     public Client clone() {
-        return new Client(this.id, this.name, this.address, this.phones);
+        return Client.builder()
+                .setId(id)
+                .setName(name)
+                .setAddress(address.clone())
+                .setPhones(phones.stream().map(Phone::clone).collect(Collectors.toList())).build();
     }
 
     public Long getId() {
@@ -62,6 +65,22 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -70,5 +89,9 @@ public class Client implements Cloneable {
                 ", address='" + address + '\'' +
                 ", phones='" + phones + '\'' +
                 '}';
+    }
+
+    public static ClientBuilder builder() {
+        return new ClientBuilder();
     }
 }

@@ -27,7 +27,7 @@ public class DbServiceDemo {
         var dbUserName = configuration.getProperty("hibernate.connection.username");
         var dbPassword = configuration.getProperty("hibernate.connection.password");
 
-        new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
+        // new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
 
         var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Address.class, Phone.class);
 
@@ -36,17 +36,38 @@ public class DbServiceDemo {
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
 ///
         var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
-        dbServiceClient.saveClient(new Client("dbServiceFirst", new Address("Address1"), null));
 
-        var clientSecond = dbServiceClient.saveClient(new Client("dbServiceSecond",new Address("Address2"), null));
+        Client client1 = Client.builder()
+                .setName("dbServiceFirst")
+                .setAddress("Address1")
+                .addPhone("1 88005553535")
+                .addPhone("1 89005553535")
+                .addPhone("1 80005553535")
+                .build();
+
+        dbServiceClient.saveClient(client1);
+
+        Client client2 = Client.builder()
+                .setName("dbServiceSecond")
+                .setAddress("Address2")
+                .build();
+
+        var clientSecond = dbServiceClient.saveClient(client2);
         var clientSecondSelected = dbServiceClient.getClient(clientSecond.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecond.getId()));
         log.info("clientSecondSelected:{}", clientSecondSelected);
 ///
-        dbServiceClient.saveClient(new Client(clientSecondSelected.getId(), "dbServiceSecondUpdated", new Address("Address3"), List.of(new Phone("3 88005553535", clientSecondSelected.getId()), new Phone("3 89005553535", clientSecondSelected.getId()))));
-        var clientUpdated = dbServiceClient.getClient(clientSecondSelected.getId())
+        Client client2Updated = Client.builder()
+                .setId(clientSecondSelected.getId())
+                .setName("dbServiceSecondUpdated")
+                .setAddress(/*clientSecondSelected.getAddress()*/"Address3")
+                .setPhones(List.of(new Phone("3 88005553535"), new Phone("3 89005553535")))
+                .build();
+
+        dbServiceClient.saveClient(client2Updated);
+        var clientUpdatedTakenFromDB = dbServiceClient.getClient(clientSecondSelected.getId())
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecondSelected.getId()));
-        log.info("clientUpdated:{}", clientUpdated);
+        log.info("clientUpdatedTakenFromDB:{}", clientUpdatedTakenFromDB);
 
         log.info("All clients");
         dbServiceClient.findAll().forEach(client -> log.info("client:{}", client));

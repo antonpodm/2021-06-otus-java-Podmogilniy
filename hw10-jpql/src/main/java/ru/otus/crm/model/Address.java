@@ -4,12 +4,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String street;
+
+    @OneToOne()
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     public Address() {
     }
@@ -22,6 +26,12 @@ public class Address {
     public Address(Long id, String street) {
         this.id = id;
         this.street = street;
+    }
+
+    public Address(Long id, String street, Client client) {
+        this.id = id;
+        this.street = street;
+        this.client = client;
     }
 
     public Long getId() {
@@ -40,11 +50,24 @@ public class Address {
         this.street = street;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
                 "id=" + id +
                 ", street='" + street + '\'' +
                 '}';
+    }
+
+    @Override
+    public Address clone() {
+        return new Address(this.id, this.street);
     }
 }
