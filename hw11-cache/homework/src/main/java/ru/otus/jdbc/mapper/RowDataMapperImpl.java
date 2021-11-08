@@ -2,7 +2,6 @@ package ru.otus.jdbc.mapper;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
