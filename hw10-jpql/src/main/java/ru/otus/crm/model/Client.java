@@ -46,7 +46,7 @@ public class Client implements Cloneable {
                 .setId(id)
                 .setName(name)
                 .setAddress(address.clone())
-                .setPhones(phones.stream().map(Phone::clone).collect(Collectors.toList())).build();
+                .setPhones(phones).build();
     }
 
     public Long getId() {
