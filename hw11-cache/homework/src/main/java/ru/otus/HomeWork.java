@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.cachehw.HwListener;
 import ru.otus.cachehw.MyCache;
+import ru.otus.cachehw.MyKey;
 import ru.otus.core.repository.executor.DbExecutorImpl;
 import ru.otus.core.sessionmanager.TransactionRunner;
 import ru.otus.core.sessionmanager.TransactionRunnerJdbc;
@@ -17,7 +18,6 @@ import ru.otus.jdbc.mapper.*;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.WeakHashMap;
 
 public class HomeWork {
     private static final String URL = "jdbc:postgresql://localhost:5430/demoDB";
@@ -38,8 +38,8 @@ public class HomeWork {
         RowDataMapper rowDataMapperClient = new RowDataMapperImpl<Client>(entityClassMetaDataClient);
         var dataTemplateClient = new DataTemplateJdbc<Client>(dbExecutor, entitySQLMetaDataClient, rowDataMapperClient);
 
-        actionsWithoutCache(transactionRunner, dataTemplateClient);
-        //actionsWithCache(transactionRunner, dataTemplateClient);
+        //actionsWithoutCache(transactionRunner, dataTemplateClient);
+        actionsWithCache(transactionRunner, dataTemplateClient);
 
     }
 
@@ -59,12 +59,12 @@ public class HomeWork {
     }
 
     private static void actionsWithCache(TransactionRunner tr, DataTemplateJdbc dt) {
-        var myCache = new MyCache<Long, Client>();
+        var myCache = new MyCache<MyKey<Long>, Client>();
 
-        var listener = new HwListener<Long, Client>() {
+        var listener = new HwListener<MyKey<Long>, Client>() {
             @Override
-            public void notify(Long key, Client value, String action) {
-                log.info("key:{}, value:{}, action: {}", key, value, action);
+            public void notify(MyKey<Long> key, Client value, String action) {
+                log.info("key:{}, value:{}, action: {}", key.get(), value, action);
             }
         };
 
