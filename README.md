@@ -11,3 +11,5 @@
 7) Модуль hw07-patterns
 8) Модуль hw08-io
 9) Модуль hw09-jdbc
+10) Модуль hw10-jpql
+11) Модуль hw11-cache
