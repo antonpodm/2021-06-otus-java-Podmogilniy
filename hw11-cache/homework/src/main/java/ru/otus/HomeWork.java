@@ -55,11 +55,11 @@ public class HomeWork {
     }
 
     private static void actionsWithoutCache(TransactionRunner tr, DataTemplateJdbc dt) {
-        doAction(new DbServiceClientImpl(tr, dt, null));
+        doAction(new DbServiceClientImpl(tr, dt));
     }
 
     private static void actionsWithCache(TransactionRunner tr, DataTemplateJdbc dt) {
-        var myCache = new MyCache<Long, Client>(new WeakHashMap<>());
+        var myCache = new MyCache<Long, Client>();
 
         var listener = new HwListener<Long, Client>() {
             @Override

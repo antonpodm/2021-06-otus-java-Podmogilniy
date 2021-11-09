@@ -22,6 +22,11 @@ public class DbServiceClientImpl implements DBServiceClient {
         this.clientDataTemplate = clientDataTemplate;
         this.cache = cache;
     }
+    public DbServiceClientImpl(TransactionRunner transactionRunner, DataTemplate<Client> clientDataTemplate) {
+        this.transactionRunner = transactionRunner;
+        this.clientDataTemplate = clientDataTemplate;
+        this.cache = null;
+    }
 
     @Override
     public Client saveClient(Client client) {
