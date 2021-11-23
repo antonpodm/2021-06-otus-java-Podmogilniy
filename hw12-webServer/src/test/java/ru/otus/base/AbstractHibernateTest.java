@@ -15,7 +15,7 @@ import ru.otus.crm.model.Client;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.service.DbServiceClientImpl;
 
-import static ru.otus.demo.DbServiceDemo.HIBERNATE_CFG_FILE;
+import static ru.otus.Homework.HIBERNATE_CFG_FILE;
 
 
 public abstract class AbstractHibernateTest {

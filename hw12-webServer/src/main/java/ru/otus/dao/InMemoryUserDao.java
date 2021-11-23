@@ -5,7 +5,6 @@ import ru.otus.crm.model.User;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 public class InMemoryUserDao implements UserDao {
 
@@ -20,17 +19,6 @@ public class InMemoryUserDao implements UserDao {
         users.put(5L, new User(5L, "Стивен Шнайдер", "user5", "11111"));
         users.put(6L, new User(6L, "Джанет Вэрни", "user6", "11111"));
         users.put(7L, new User(7L, "Брэндон Смит", "user7", "11111"));
-    }
-
-    @Override
-    public Optional<User> findById(long id) {
-        return Optional.ofNullable(users.get(id));
-    }
-
-    @Override
-    public Optional<User> findRandomUser() {
-        Random r = new Random();
-        return users.values().stream().skip(r.nextInt(users.size() - 1)).findFirst();
     }
 
     @Override

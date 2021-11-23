@@ -8,14 +8,13 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.otus.dao.ClientDao;
+import ru.otus.crm.service.DBServiceClient;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.UserAuthService;
 import ru.otus.servlet.AuthorizationFilter;
 import ru.otus.servlet.ClientsServlet;
 import ru.otus.servlet.LoginServlet;
-import ru.otus.servlet.ClientsApiServlet;
 
 import java.util.Arrays;
 
@@ -25,14 +24,14 @@ public class WebServerImpl implements WebServer {
     private static final String COMMON_RESOURCES_DIR = "static";
 
 
-    private final ClientDao clientDao;
+    private final DBServiceClient dbServiceClient;
     private final UserAuthService authService;
     private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
 
-    public WebServerImpl(int port, ClientDao clientDao, Gson gson, TemplateProcessor templateProcessor, UserAuthService authService) {
-        this.clientDao = clientDao;
+    public WebServerImpl(int port, DBServiceClient dbServiceClient, Gson gson, TemplateProcessor templateProcessor, UserAuthService authService) {
+        this.dbServiceClient = dbServiceClient;
         this.gson = gson;
         this.templateProcessor = templateProcessor;
         server = new Server(port);
@@ -64,7 +63,7 @@ public class WebServerImpl implements WebServer {
 
         HandlerList handlers = new HandlerList();
         handlers.addHandler(resourceHandler);
-        handlers.addHandler(applySecurity(servletContextHandler, "/clients", "/api/clients/*"));
+        handlers.addHandler(applySecurity(servletContextHandler, "/clients"));
 
         server.setHandler(handlers);
         return server;
@@ -80,8 +79,7 @@ public class WebServerImpl implements WebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor)), "/clients");
-        servletContextHandler.addServlet(new ServletHolder(new ClientsApiServlet(gson, clientDao)), "/api/clients/*");
+        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, dbServiceClient)), "/clients");
         return servletContextHandler;
     }
 

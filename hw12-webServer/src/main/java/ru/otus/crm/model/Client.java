@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class Client implements Cloneable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

@@ -1,22 +1,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Клиенты</title>
-    <script>
-        function getClients() {
-            const clientDataButton = document.getElementById('clientDataButton');
-            fetch('api/clients/')
-                .then(response => response.json())
-                .then(client => clientDataButton.innerHTML = JSON.stringify(client));
-        }
-    </script>
 </head>
 
-<body>
-<h4>Получить клиентов просто так</h4>
-<button onclick="getClients()">Получить</button>
-<pre id="clientDataButton"></pre>
-
-<form action="http://localhost:8080/api/clients" method="post">
+<form method="post">
     <h4>Создать нового клиента</h4>
     <p>Имя клиента: <input type="text" name="name"></p>
     <p>Улица: <input type="text" size="20" name="address"></p>
@@ -24,5 +11,27 @@
     <p>Мобильный телефон: <input type="text" name="phone2"></p>
     <p><input type="submit" value="Сохранить"></p>
 </form>
+
+<h4>Список клиентов</h4>
+<table border="1" style="width: 450px">
+    <thead>
+    <tr>
+        <td style="width: 20px">Id</td>
+        <td style="width: 100px">Имя</td>
+        <td style="width: 100px">Адрес</td>
+        <td style="width: 200px">Телефон</td>
+    </tr>
+    </thead>
+    <tbody>
+    <#list clients as client>
+    <tr>
+        <td>${client.id}</td>
+        <td>${client.name}</td>
+        <td>${client.address}</td>
+        <td>${client.phones}</td>
+    </tr>
+    </#list>
+    </tbody>
+</table>
 </body>
 </html>
