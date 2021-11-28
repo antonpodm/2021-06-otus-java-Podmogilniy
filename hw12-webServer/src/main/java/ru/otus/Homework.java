@@ -51,7 +51,7 @@ public class Homework {
         UserAuthService authService = new UserAuthServiceImpl(userDao);
 
         WebServer webServer = new WebServerImpl(WEB_SERVER_PORT,
-                dbServiceClient, gson, templateProcessor, authService);
+                dbServiceClient, templateProcessor, authService);
 
         webServer.start();
         webServer.join();

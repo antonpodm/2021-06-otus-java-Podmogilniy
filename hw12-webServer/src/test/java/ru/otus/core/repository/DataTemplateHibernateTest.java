@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import ru.otus.base.AbstractHibernateTest;
 import ru.otus.crm.model.Address;
 import ru.otus.crm.model.Client;
-import ru.otus.crm.model.Phone;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +14,7 @@ class DataTemplateHibernateTest extends AbstractHibernateTest {
     @DisplayName(" корректно сохраняет, изменяет и загружает клиента по заданному id")
     void shouldSaveAndFindCorrectClientById() {
         //given
-        var client = new Client("Вася", new Address("Address1"), null);
+        var client = Client.builder().setName("Вася").setAddress(new Address("Address1")).build();
 
         //when
         var savedClient = transactionManager.doInTransaction(session -> {
@@ -49,7 +46,7 @@ class DataTemplateHibernateTest extends AbstractHibernateTest {
         var loadedClient = transactionManager.doInTransaction(session ->
                 clientTemplate.findById(session, updatedClient.getId())
         );
-        assertThat(loadedClient).isPresent().get().isEqualToComparingFieldByField(updatedClient);
+        assertThat(loadedClient).isPresent().get().usingRecursiveComparison().isEqualTo(updatedClient);
 
         //when
         var clientList = transactionManager.doInTransaction(session ->
@@ -57,7 +54,7 @@ class DataTemplateHibernateTest extends AbstractHibernateTest {
         );
 
         //then
-        assertThat(clientList.size()).isEqualTo(1);
-        assertThat(clientList.get(0)).usingRecursiveComparison().isEqualTo(updatedClient);
+        assertThat(clientList.size()).isEqualTo(3);
+        assertThat(clientList.get(2)).usingRecursiveComparison().isEqualTo(updatedClient);
     }
 }

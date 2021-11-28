@@ -26,13 +26,11 @@ public class WebServerImpl implements WebServer {
 
     private final DBServiceClient dbServiceClient;
     private final UserAuthService authService;
-    private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
 
-    public WebServerImpl(int port, DBServiceClient dbServiceClient, Gson gson, TemplateProcessor templateProcessor, UserAuthService authService) {
+    public WebServerImpl(int port, DBServiceClient dbServiceClient, TemplateProcessor templateProcessor, UserAuthService authService) {
         this.dbServiceClient = dbServiceClient;
-        this.gson = gson;
         this.templateProcessor = templateProcessor;
         server = new Server(port);
         this.authService = authService;
