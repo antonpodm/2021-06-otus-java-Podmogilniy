@@ -2,7 +2,7 @@ package ru.otus.appcontainer;
 
 import ru.otus.appcontainer.api.*;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class AppComponentsContainerImpl implements AppComponentsContainer {
@@ -29,22 +29,34 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                         if (!m.canAccess(configInstance)) {
                             m.setAccessible(true);
                         }
-                        var params = m.getParameterTypes();
-                        var args = new Object[params.length];
-
-                        for (int i = 0; i < params.length; i++) {
-                            args[i] = getAppComponent(params[i]);
-                        }
-
-                        try {
-                            var component = m.invoke(configInstance, args);
-                            var name = m.getAnnotation(AppComponent.class).name();
-                            appComponents.add(component);
-                            appComponentsByName.put(name, component);
-                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                            throw new MyRuntimeException(ex);
-                        }
+                        var args = makeArgs(m);
+                        makeAppComponent(m, configInstance, args);
                     });
+        } catch (Exception ex) {
+            throw new MyRuntimeException(ex);
+        }
+    }
+
+    private Object[] makeArgs(Method m) {
+        var params = m.getParameterTypes();
+        var args = new Object[params.length];
+
+        for (int i = 0; i < params.length; i++) {
+            args[i] = getAppComponent(params[i]);
+        }
+        return args;
+    }
+
+    private void makeAppComponent(Method m, Object configInstance, Object[] args) {
+        try {
+            var component = m.invoke(configInstance, args);
+            var name = m.getAnnotation(AppComponent.class).name();
+            if (!appComponentsByName.containsKey(name)) {
+                appComponents.add(component);
+                appComponentsByName.put(name, component);
+            } else {
+                throw new IllegalNameException();
+            }
         } catch (Exception ex) {
             throw new MyRuntimeException(ex);
         }
