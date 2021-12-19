@@ -1,21 +1,19 @@
 package ru.otus.crm.model;
 
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
-@Table(name = "phones")
+@Table("phones")
 public class Phone {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String number;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    private Long clientId;
 
     public Phone() {
     }
@@ -30,16 +28,17 @@ public class Phone {
         this.number = number;
     }
 
-    public Phone(String number, Client client) {
+    public Phone(String number, Long clientId) {
         this.id = null;
         this.number = number;
-        this.client = client;
+        this.clientId = clientId;
     }
 
-    public Phone(Long id, String number, Client client) {
+    @PersistenceConstructor
+    public Phone(Long id, String number, Long clientId) {
         this.id = id;
         this.number = number;
-        this.client = client;
+        this.clientId = clientId;
     }
 
     public Long getId() {
@@ -58,12 +57,12 @@ public class Phone {
         this.number = number;
     }
 
-    public Client getClient() {
-        return client;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     @Override
@@ -76,6 +75,6 @@ public class Phone {
 
     @Override
     public Phone clone() {
-        return new Phone(this.id, this.number);
+        return new Phone(this.id, this.number, this.clientId);
     }
 }

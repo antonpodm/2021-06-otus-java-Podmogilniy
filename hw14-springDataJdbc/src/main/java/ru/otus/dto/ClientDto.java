@@ -5,6 +5,7 @@ import ru.otus.crm.model.Client;
 import ru.otus.crm.model.Phone;
 
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 
 public class ClientDto {
@@ -41,7 +42,7 @@ public class ClientDto {
         return address == null ? "" : address.getStreet() == null ? "" : address.getStreet();
     }
 
-    private String getPhonesView(List<Phone> phones) {
+    private String getPhonesView(Set<Phone> phones) {
         var phonesView = new StringJoiner(", ");
         for (Phone phone : phones) {
             phonesView.add(phone.getNumber());

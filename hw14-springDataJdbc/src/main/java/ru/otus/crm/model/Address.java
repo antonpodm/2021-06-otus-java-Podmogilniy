@@ -1,19 +1,17 @@
 package ru.otus.crm.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.lang.NonNull;
 
-@Entity
-@Table(name = "address")
+@Table("address")
 public class Address implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NonNull
     private String street;
-
-    @OneToOne()
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    private Long clientId;
 
     public Address() {
     }
@@ -23,15 +21,15 @@ public class Address implements Cloneable {
         this.street = street;
     }
 
-    public Address(Long id, String street) {
-        this.id = id;
-        this.street = street;
+    public Address(String street, Long clientId) {
+        this(null, street, clientId);
     }
 
-    public Address(Long id, String street, Client client) {
+    @PersistenceConstructor
+    public Address(Long id, String street, Long clientId) {
         this.id = id;
         this.street = street;
-        this.client = client;
+        this.clientId = clientId;
     }
 
     public Long getId() {
@@ -50,12 +48,12 @@ public class Address implements Cloneable {
         this.street = street;
     }
 
-    public Client getClient() {
-        return client;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     @Override
@@ -68,6 +66,6 @@ public class Address implements Cloneable {
 
     @Override
     public Address clone() {
-        return new Address(this.id, this.street);
+        return new Address(this.id, this.street, this.clientId);
     }
 }

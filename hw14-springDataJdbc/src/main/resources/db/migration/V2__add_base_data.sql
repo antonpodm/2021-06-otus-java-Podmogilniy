@@ -1,3 +1,4 @@
+
 insert into client (id, name)
 values (1, 'name1');
 insert into client (id, name)
@@ -17,13 +18,12 @@ values (3, 'phone22', 2);
 
 SELECT setval('public."client_id_seq"',
               (SELECT MAX(id) FROM public.client)
-);
+           );
 
 SELECT setval('public."address_id_seq"',
               (SELECT MAX(id) FROM public.address)
-);
+           );
 
 SELECT setval('public."phones_id_seq"',
               (SELECT MAX(id) FROM public.phones)
-);
-
+           );

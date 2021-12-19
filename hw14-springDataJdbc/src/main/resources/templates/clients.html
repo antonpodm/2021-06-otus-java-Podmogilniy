@@ -1,9 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
     <title>Клиенты</title>
 </head>
 
-<form method="post">
+<form action="/clients" method="post">
     <h4>Создать нового клиента</h4>
     <p>Имя клиента: <input type="text" name="name"></p>
     <p>Улица: <input type="text" size="20" name="address"></p>
@@ -13,7 +14,7 @@
 </form>
 
 <h4>Список клиентов</h4>
-<table border="1" style="width: 450px">
+<table class="clients" border="1" style="width: 450px">
     <thead>
     <tr>
         <td style="width: 20px">Id</td>
@@ -23,14 +24,12 @@
     </tr>
     </thead>
     <tbody>
-    <#list clients as client>
-    <tr>
-        <td>${client.id}</td>
-        <td>${client.name}</td>
-        <td>${client.address}</td>
-        <td>${client.phones}</td>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.address}"></td>
+        <td th:text="${client.phones}"></td>
     </tr>
-    </#list>
     </tbody>
 </table>
 </body>

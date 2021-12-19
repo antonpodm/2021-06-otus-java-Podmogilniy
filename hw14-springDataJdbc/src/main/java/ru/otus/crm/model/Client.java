@@ -1,39 +1,36 @@
 package ru.otus.crm.model;
 
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.lang.NonNull;
 
-@Entity
-@Table(name = "client")
+import java.util.List;
+import java.util.Set;
+
+@Table("client")
 public class Client implements Cloneable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "name")
+    @NonNull
     private String name;
-
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @MappedCollection(idColumn = "client_id")
     private Address address;
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Phone> phones;
+    @MappedCollection(idColumn = "client_id")
+    private Set<Phone> phones;
 
     public Client() {
     }
 
-    public Client(String name, Address address, List<Phone> phones) {
-        this.id = null;
-        this.name = name;
-        this.address = address;
-        this.phones = phones;
+    public Client(String name, Address address, Set<Phone> phones) {
+        this(null, name, address, phones);
     }
 
-    public Client(Long id, String name, Address address, List<Phone> phones) {
+    @PersistenceConstructor
+    public Client(Long id, String name, Address address, Set<Phone> phones) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -73,11 +70,11 @@ public class Client implements Cloneable {
         this.address = address;
     }
 
-    public List<Phone> getPhones() {
+    public Set<Phone> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(Set<Phone> phones) {
         this.phones = phones;
     }
 

@@ -1,8 +1,6 @@
 package ru.otus.crm.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ClientBuilder {
@@ -10,10 +8,9 @@ public class ClientBuilder {
     private Long id;
     private String name;
     private Address address;
-    private List<Phone> phones = new ArrayList<>();
+    private Set<Phone> phones = new HashSet<>();
 
-    ClientBuilder() {
-
+    public ClientBuilder() {
     }
 
     public ClientBuilder setId(Long id) {
@@ -27,7 +24,11 @@ public class ClientBuilder {
     }
 
     public ClientBuilder setAddress(Address address) {
-        this.address = address.clone();
+        if (address != null) {
+            this.address = address.clone();
+        } else {
+            this.address = null;
+        }
         return this;
     }
 
@@ -35,9 +36,9 @@ public class ClientBuilder {
         return street != null ? setAddress(new Address(street)) : setAddress((Address) null);
     }
 
-    public ClientBuilder setPhones(List<Phone> phones) {
+    public ClientBuilder setPhones(Set<Phone> phones) {
         Objects.requireNonNull(phones);
-        this.phones = phones.stream().map(Phone::clone).collect(Collectors.toList());
+        this.phones = phones.stream().map(Phone::clone).collect(Collectors.toSet());
         return this;
     }
 
@@ -52,10 +53,10 @@ public class ClientBuilder {
         client.setName(name);
         client.setAddress(address);
         if (address != null) {
-            address.setClient(client);
+            address.setClientId(client.getId());
         }
         for (Phone phone : phones) {
-            phone.setClient(client);
+            phone.setClientId(client.getId());
         }
         client.setPhones(phones);
         return client;
