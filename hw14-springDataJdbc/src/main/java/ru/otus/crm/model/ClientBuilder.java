@@ -1,6 +1,8 @@
 package ru.otus.crm.model;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ClientBuilder {

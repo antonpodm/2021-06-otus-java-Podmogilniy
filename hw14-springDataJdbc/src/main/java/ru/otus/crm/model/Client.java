@@ -7,7 +7,6 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.NonNull;
 
-import java.util.List;
 import java.util.Set;
 
 @Table("client")

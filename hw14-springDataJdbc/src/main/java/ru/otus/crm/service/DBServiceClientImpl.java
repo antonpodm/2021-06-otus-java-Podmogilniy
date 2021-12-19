@@ -8,7 +8,6 @@ import ru.otus.crm.repository.ClientRepository;
 import ru.otus.sessionmanager.TransactionManager;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DBServiceClientImpl implements DBServiceClient {
@@ -29,13 +28,6 @@ public class DBServiceClientImpl implements DBServiceClient {
             log.info("saved client: {}", savedClient);
             return savedClient;
         });
-    }
-
-    @Override
-    public Optional<Client> getClient(long id) {
-        var clientOptional = clientRepository.findById(id);
-        log.info("client: {}", clientOptional);
-        return clientOptional;
     }
 
     @Override

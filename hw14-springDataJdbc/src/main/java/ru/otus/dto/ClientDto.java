@@ -4,7 +4,6 @@ import ru.otus.crm.model.Address;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.model.Phone;
 
-import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
