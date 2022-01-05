@@ -45,7 +45,9 @@ public class ClientBuilder {
     }
 
     public ClientBuilder addPhone(String phone) {
-        phones.add(new Phone(phone));
+        if(!phone.isEmpty()) {
+            phones.add(new Phone(phone));
+        }
         return this;
     }
 

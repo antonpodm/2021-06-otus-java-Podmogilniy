@@ -4,15 +4,19 @@ import ru.otus.crm.model.Address;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.model.Phone;
 
+import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
 public class ClientDto {
 
-    private final Long id;
-    private final String name;
-    private final String address;
-    private final String phones;
+    private Long id;
+    private String name;
+    private String address;
+    private List<String> phones;
+
+    public ClientDto() {
+    }
 
     public ClientDto(Client client) {
         this.id = client.getId();
@@ -33,20 +37,35 @@ public class ClientDto {
         return address;
     }
 
-    public String getPhones() {
+    public List<String> getPhones() {
         return phones;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 
     private String getAddressView(Address address) {
         return address == null ? "" : address.getStreet() == null ? "" : address.getStreet();
     }
 
-    private String getPhonesView(Set<Phone> phones) {
-        var phonesView = new StringJoiner(", ");
-        for (Phone phone : phones) {
-            phonesView.add(phone.getNumber());
-        }
-        return phonesView.toString();
+    private List<String> getPhonesView(Set<Phone> phones) {
+        return phones
+                .stream()
+                .map(Phone::getNumber)
+                .toList();
     }
 
     @Override
