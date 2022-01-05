@@ -1,38 +1,43 @@
 package ru.otus.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import ru.otus.config.AppConfig;
 import ru.otus.crm.model.Client;
-import ru.otus.crm.service.DBServiceClient;
 import ru.otus.dto.ClientDto;
+import ru.otus.dto.ClientsData;
+import ru.otus.messagesystem.client.MsClient;
+import ru.otus.messagesystem.message.MessageType;
 
-import java.security.Principal;
-import java.util.List;
+import java.util.Collections;
 
 
 @Controller
 public class WsController {
-    private static final Logger logger = LoggerFactory.getLogger(WsController.class);
-    private final DBServiceClient dbServiceClient;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MsClient databaseMsClient;
+    private final MsClient frontendMsClient;
 
-    public WsController(DBServiceClient dbServiceClient, SimpMessagingTemplate template) {
-        this.dbServiceClient = dbServiceClient;
+    public WsController(SimpMessagingTemplate template,
+                        @Qualifier(AppConfig.DATABASE_MS_CLIENT) MsClient databaseMsClient,
+                        @Qualifier(AppConfig.FRONTEND_MS_CLIENT) MsClient frontendMsClient
+    ) {
         this.simpMessagingTemplate = template;
+        this.databaseMsClient = databaseMsClient;
+        this.frontendMsClient = frontendMsClient;
     }
 
     @MessageMapping("/clients")
-    public void getClients(){
-        var clients = dbServiceClient
-                .findAll()
-                .stream()
-                .map(ClientDto::new)
-                .toList();
-        simpMessagingTemplate.convertAndSend("/topic/clients",clients);
+    public void getClients() {
+        var message = frontendMsClient.produceMessage(
+                databaseMsClient.getName(),
+                new ClientsData(Collections.emptyList()),
+                MessageType.GET_CLIENTS,
+                resultDataType -> simpMessagingTemplate.convertAndSend("/topic/clients", resultDataType.getClientsDto())
+        );
+        frontendMsClient.sendMessage(message);
     }
 
     @MessageMapping("/clients/save")
@@ -43,9 +48,13 @@ public class WsController {
                 .addPhone(clientDto.getPhones().get(0))
                 .addPhone(clientDto.getPhones().get(1))
                 .build();
-        dbServiceClient.saveClient(client);
-        var newClientDto = new ClientDto(client);
-        simpMessagingTemplate.convertAndSend("/topic/clients/new", List.of(newClientDto));
 
+        var message = frontendMsClient.produceMessage(
+                databaseMsClient.getName(),
+                new ClientsData(client),
+                MessageType.SAVE_CLIENT,
+                resultDataType -> simpMessagingTemplate.convertAndSend("/topic/clients/new", resultDataType.getClientsDto())
+        );
+        frontendMsClient.sendMessage(message);
     }
 }
