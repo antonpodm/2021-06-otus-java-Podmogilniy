@@ -9,6 +9,7 @@ import ru.otus.crm.repository.GoodRepository;
 import ru.otus.sessionmanager.TransactionManager;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +27,17 @@ public class DBServiceGoodImpl implements DBServiceGood{
     }
 
     @Override
-    public List<Good> findByProfileId(Long profileId) {
-        var goods = goodRepository.findByProfileId(profileId);
-        log.info("profile goods:{}", goods);
+    public List<Good> findByUserId(Long profileId) {
+        var goods = goodRepository.findByUserId(profileId);
+        log.info("user goods:{}", goods);
         return goods;
+    }
+
+    @Override
+    public Optional<Good> findByUserIdAndOuterId(Long userId, Long outerId) {
+        var good = goodRepository.findByUserIdAndOuterId(userId, outerId);
+        log.info("user good: {}", good);
+        return good;
     }
 
     @Override

@@ -15,7 +15,7 @@ import ru.otus.enums.MathStatement;
 public class GoodDto {
 
     private Long id;
-    private Long profileId;
+    private Long userId;
     private Long outerId;
     private DealType dealType;
     private MathStatement mathStatement;
@@ -24,7 +24,7 @@ public class GoodDto {
 
     public GoodDto(Good good) {
         this.id = good.getId();
-        this.profileId = good.getProfileId();
+        this.userId = good.getUserId();
         this.outerId = good.getOuterId();
         this.dealType = good.getDealType();
         this.mathStatement = good.getMathStatement();
@@ -33,6 +33,6 @@ public class GoodDto {
     }
 
     public Good toGood() {
-        return new Good(id, profileId, outerId, dealType, mathStatement, price, name);
+        return new Good(id, userId, outerId, dealType, mathStatement, price, name);
     }
 }

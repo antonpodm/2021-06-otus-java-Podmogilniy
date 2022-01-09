@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.otus.crm.model.Profile;
 
 @Data
 @NoArgsConstructor
@@ -15,12 +14,12 @@ public class ProfileDto {
     private Long id;
     private String name;
 
-    public ProfileDto(Profile profile) {
-        this.id = profile.getId();
-        this.name = profile.getName();
+   /* public ProfileDto(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
     }
 
-    public Profile toProfile() {
-        return new Profile(id, name);
-    }
+    public User toProfile() {
+        return new User(id, name);
+    }*/
 }

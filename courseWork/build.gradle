@@ -7,9 +7,9 @@ targetCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation('org.projectlombok:lombok')
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:22.0.0'
     annotationProcessor('org.projectlombok:lombok')
-
+    implementation 'org.telegram:telegrambotsextensions:5.6.0'
     implementation("ch.qos.logback:logback-classic")
     implementation('org.jsoup:jsoup:1.7.2')
 
@@ -19,6 +19,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jdbc')
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation 'org.telegram:telegrambots-spring-boot-starter:5.6.0'
 
     implementation("com.google.code.gson:gson:${Versions.gson}")
     implementation("org.freemarker:freemarker:${Versions.freemarker}")

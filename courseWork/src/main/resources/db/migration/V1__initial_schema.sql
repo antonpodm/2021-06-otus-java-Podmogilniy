@@ -1,33 +1,25 @@
-create table profiles
+create table users
 (
     id bigserial not null primary key,
-    name varchar(50) not null
+    telegram_id bigint not null,
+    first_name text default '',
+    last_name text default '',
+    user_name text default '',
+    is_active boolean not null default false
 );
 
 create table goods
 (
     id bigserial not null primary key,
-    name varchar(50) not null,
+    name text not null,
     outer_id bigint not null,
-    deal_type varchar(50) not null,
-    math_statement varchar(50) not null,
+    deal_type text not null,
+    math_statement text not null,
     price bigint not null,
-    profile_id bigint not null,
-    CONSTRAINT fk_profiles_goods FOREIGN KEY (profile_id)
-        REFERENCES profiles(id) MATCH SIMPLE
+    user_id bigint not null,
+    CONSTRAINT fk_users_goods FOREIGN KEY (user_id)
+        REFERENCES users(id) MATCH SIMPLE
         ON UPDATE CASCADE ON DELETE CASCADE
         DEFERRABLE INITIALLY IMMEDIATE
 );
-
-create table emails
-(
-    id bigserial not null primary key,
-    profile_id bigint not null,
-    email varchar(256) not null,
-    CONSTRAINT fk_profiles_emails FOREIGN KEY (profile_id)
-        REFERENCES profiles(id) MATCH SIMPLE
-        ON UPDATE CASCADE ON DELETE CASCADE
-        DEFERRABLE INITIALLY IMMEDIATE
-);
-
 
