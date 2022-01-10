@@ -4,24 +4,19 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import ru.otus.bot.CommandsHandler;
-import ru.otus.bot.CommandsList;
+import ru.otus.enums.Commands;
 import ru.otus.exceptions.AppUserNotFoundException;
 import ru.otus.exceptions.CommandAlreadyDoneException;
 import ru.otus.toolbox.BotHelper;
 
 public class StopCommand extends ServiceCommand {
 
-    private static final String COMMAND_TEXT = "Вы отписались от рассылки цен товаров. Для возобновления рассылки напишите боту " + CommandsList.START;
-    private static final String ERROR_COMMAND_TEXT = "Вы уже отписаны от рассылки. Для возобновления напишите боту " + CommandsList.START;
+    private static final String COMMAND_TEXT = "Вы отписались от рассылки цен товаров. Для возобновления рассылки напишите боту " + Commands.START.getCommand();
+    private static final String ERROR_COMMAND_TEXT = "Вы уже отписаны от рассылки. Для возобновления напишите боту " + Commands.START.getCommand();
     private final CommandsHandler commandsHandler;
 
     public StopCommand(CommandsHandler commandsHandler) {
-        super(CommandsList.STOP, CommandsList.STOP_DESCRIPTION);
-        this.commandsHandler = commandsHandler;
-    }
-
-    public StopCommand(String identifier, String description, CommandsHandler commandsHandler) {
-        super(identifier, description);
+        super(Commands.STOP);
         this.commandsHandler = commandsHandler;
     }
 

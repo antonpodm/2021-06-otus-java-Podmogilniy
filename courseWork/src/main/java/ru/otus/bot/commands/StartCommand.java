@@ -4,24 +4,19 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import ru.otus.bot.CommandsHandler;
-import ru.otus.bot.CommandsList;
+import ru.otus.enums.Commands;
 import ru.otus.exceptions.CommandAlreadyDoneException;
 import ru.otus.toolbox.BotHelper;
 
 
 public class StartCommand extends ServiceCommand {
 
-    private static final String COMMAND_TEXT = "Давайте начнём! Вы подписались на рассылку цен товаров. Для добавления товара напишите боту " + CommandsList.ADD;
-    private static final String ERROR_COMMAND_TEXT = "Вы уже подписаны на рассылку. Для добавления товара напишите боту " + CommandsList.ADD;
+    private static final String COMMAND_TEXT = "Давайте начнём! Вы подписались на обновление цен товаров. Для добавления товара для отслеживания напишите боту " + Commands.ADD_GOOD.getCommand();
+    private static final String ERROR_COMMAND_TEXT = "Вы уже подписаны на рассылку. Для добавления товара напишите боту " + Commands.ADD_GOOD.getCommand();
     private final CommandsHandler commandsHandler;
 
     public StartCommand(CommandsHandler commandsHandler) {
-        super(CommandsList.START, CommandsList.START_DESCRIPTION);
-        this.commandsHandler = commandsHandler;
-    }
-
-    public StartCommand(String identifier, String description, CommandsHandler commandsHandler) {
-        super(identifier, description);
+        super(Commands.START);
         this.commandsHandler = commandsHandler;
     }
 

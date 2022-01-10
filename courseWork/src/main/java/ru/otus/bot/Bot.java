@@ -3,13 +3,11 @@ package ru.otus.bot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.otus.bot.commands.AddCommand;
-import ru.otus.bot.commands.RemoveCommand;
-import ru.otus.bot.commands.StartCommand;
-import ru.otus.bot.commands.StopCommand;
+import ru.otus.bot.commands.*;
 
 import java.util.List;
 
@@ -30,6 +28,9 @@ public class Bot extends TelegramLongPollingCommandBot {
         register(new StopCommand(commandsHandler));
         register(new AddCommand(commandsHandler));
         register(new RemoveCommand(commandsHandler));
+        register(new ListCommand(commandsHandler));
+        register(new DeleteUserCommand(commandsHandler));
+        register(new HelpCommand());
     }
 
     @Override

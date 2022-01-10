@@ -6,17 +6,18 @@ import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.otus.bot.CommandsList;
+import ru.otus.enums.Commands;
 
 abstract class ServiceCommand extends BotCommand {
 
     protected static final Logger log = LoggerFactory.getLogger(ServiceCommand.class);
     protected static final String ERROR_EVERYTHING_COLLAPSED = "Что-то сломалось. Если ошибка повторяется, обратитесь в поддержку бота.";
-    protected static final String ERROR_USER_NOT_FOUND_TEXT = "Вы не зарегистрированы в системе. Для регистрации напишите боту " + CommandsList.START;
-    protected static final String ERROR_GOOD_NOT_FOUND_TEXT = "Данный товар отсутствует в списке товаров. Для просмотра списка товаров напишите боту " + CommandsList.LIST;
+    protected static final String ERROR_USER_NOT_FOUND_TEXT = "Вы не зарегистрированы в системе. Для регистрации напишите боту " + Commands.START.getCommand();
+    protected static final String ERROR_GOOD_NOT_FOUND_TEXT = "Данный товар отсутствует в списке товаров. Для просмотра списка товаров напишите боту " + Commands.GOODS_LIST.getCommand();
+    protected static final String ERROR_COMMAND_FORMAT_TEXT = "Формат команды не соответсвует. Для просмотра списка команд и их формата напишите " + Commands.HELP.getCommand();
 
-    ServiceCommand(String identifier, String description) {
-        super(identifier, description);
+    ServiceCommand(Commands command) {
+        super(command.getCommand(), command.getDescription() + command.getFormat());
     }
 
     /**

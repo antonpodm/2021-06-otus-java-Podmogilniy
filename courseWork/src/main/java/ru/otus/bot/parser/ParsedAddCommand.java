@@ -1,7 +1,7 @@
 package ru.otus.bot.parser;
 
 import lombok.Getter;
-import ru.otus.bot.CommandsList;
+import ru.otus.enums.Commands;
 import ru.otus.enums.DealType;
 import ru.otus.enums.MathStatement;
 
@@ -9,7 +9,7 @@ import ru.otus.enums.MathStatement;
 public class ParsedAddCommand extends ParsedCommand{
 
     private final int PARAMS_AMOUNT = 5;
-    private final String COMMAND_NAME = CommandsList.ADD;
+    private final String COMMAND_NAME = Commands.ADD_GOOD.getCommand();
     private String name;
     private Long outerId;
     private DealType dealType;

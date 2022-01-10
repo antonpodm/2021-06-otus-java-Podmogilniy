@@ -1,13 +1,13 @@
 package ru.otus.bot.parser;
 
 import lombok.Getter;
-import ru.otus.bot.CommandsList;
+import ru.otus.enums.Commands;
 
 @Getter
 public class ParsedRemoveCommand extends ParsedCommand {
 
     private final int PARAMS_AMOUNT = 1;
-    private final String COMMAND_NAME = CommandsList.REMOVE;
+    private final String COMMAND_NAME = Commands.REMOVE_GOOD.getCommand();
     private Long outerId;
 
     public ParsedRemoveCommand(String[] strings) {

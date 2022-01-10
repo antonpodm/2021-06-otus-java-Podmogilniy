@@ -1,7 +1,15 @@
 package ru.otus.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum MathStatement {
-    MORE,
-    LESS,
-    EQUALS
+    MORE("больше"),
+    LESS("меньше");
+
+    private final String description;
+
+    MathStatement(String description) {
+        this.description = description;
+    }
 }

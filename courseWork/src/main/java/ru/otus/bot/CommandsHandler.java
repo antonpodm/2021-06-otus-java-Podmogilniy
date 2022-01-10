@@ -9,11 +9,16 @@ import ru.otus.crm.model.AppUser;
 import ru.otus.crm.model.Good;
 import ru.otus.crm.service.DBServiceGood;
 import ru.otus.crm.service.DBServiceAppUser;
+import ru.otus.dto.GoodDto;
+import ru.otus.enums.Commands;
 import ru.otus.exceptions.AppUserNotFoundException;
 import ru.otus.exceptions.CommandAlreadyDoneException;
 import ru.otus.exceptions.GoodNotFoundException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +34,7 @@ public class CommandsHandler {
         if (userOptional.isPresent()) {
             var appUser = userOptional.get();
             if (appUser.isActive()) {
-                throw new CommandAlreadyDoneException(CommandsList.START);
+                throw new CommandAlreadyDoneException(Commands.START.getCommand());
             }
             builder = appUser.toBuilder();
         } else {
@@ -50,7 +55,7 @@ public class CommandsHandler {
         } else {
             var appUser = userOptional.get();
             if (!appUser.isActive()) {
-                throw new CommandAlreadyDoneException(CommandsList.STOP);
+                throw new CommandAlreadyDoneException(Commands.STOP.getCommand());
             }
             appUser = appUser.toBuilder().isActive(false).build();
             dbServiceAppUser.save(appUser);
@@ -88,6 +93,35 @@ public class CommandsHandler {
             } else {
                 dbServiceGood.delete(existingGood.get());
             }
+        }
+    }
+
+    public String handleListCommand(User tgUser) {
+        var userOptional = findUser(tgUser);
+        if (userOptional.isEmpty()) {
+            throw new AppUserNotFoundException(tgUser.getId());
+        } else {
+            var appUser = userOptional.get();
+            var existingGoods = dbServiceGood.findByUserId(appUser.getId());
+            if (existingGoods.isEmpty()) {
+                throw new GoodNotFoundException(-1L);
+            }
+            var joiner = new StringJoiner("\n");
+            var goodsDto = existingGoods.stream().map(GoodDto::new).map(GoodDto::toString).toList();
+            for (String goodString : goodsDto) {
+                joiner.add(goodString);
+            }
+            return joiner.toString();
+        }
+    }
+
+    public void handleDeleteUserCommand(User tgUser) {
+        var userOptional = findUser(tgUser);
+        if (userOptional.isEmpty()) {
+            throw new AppUserNotFoundException(tgUser.getId());
+        } else {
+            var appUser = userOptional.get();
+            dbServiceAppUser.delete(appUser);
         }
     }
 

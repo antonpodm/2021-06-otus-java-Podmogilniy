@@ -35,4 +35,13 @@ public class GoodDto {
     public Good toGood() {
         return new Good(id, userId, outerId, dealType, mathStatement, price, name);
     }
+
+    @Override
+    public String toString() {
+        return "Товар " + name +
+                " с id " + outerId +
+                ", тип сделки " + dealType.getType() +
+                " " + mathStatement.getDescription() +
+                " " + price + ".";
+    }
 }
