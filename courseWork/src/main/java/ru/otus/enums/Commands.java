@@ -4,16 +4,17 @@ import lombok.Getter;
 
 @Getter
 public enum Commands {
-    START("/start", "Начать трансляцию. ", "/start без аргументов"),
-    STOP("/stop", "Остановить трансляцию. ", "/stop без аргументов"),
-    HELP("/help", "Показать справку. ", "/help без аргументов"),
-    ADD_GOOD("/add", "Добавить товар. ", "/add [название товара] [id товара] [тип сделки: "
-            + DealType.SELL.name() + "/" + DealType.BUY.name() + "] [больше/меньше: "
-            + MathStatement.MORE.name() + "/" + MathStatement.LESS.name() + "] [цена]"),
-    REMOVE_GOOD("/remove", "Удалить товар. ", "/remove [id товара]"),
-    GOODS_LIST("/list", "Список товаров. ", "/list без аргументов"),
-    DELETE_USER("/delete_user", "Удалить пользователя. ", "/delete_user без аргументов"),
-    GOOD_INFO("/info", "Показать информацию о товаре. ", "/info [id товара]");
+    START("/start", "Начать трансляцию. Создаёт Вам профиль в системе бота, если у Вас его ещё не было. Запускает отправку обновления цен товаров от бота.", ""),
+    STOP("/stop", "Остановить трансляцию. Обновления цен товаров не будут приходить Вам от бота", ""),
+    HELP("/help", "Показать справку. ", ""),
+    ADD_GOOD("/add", "Добавить товар в список Ваших товаров. Формат команды указан ниже. Вы можете комбинировать параметры покупки/продажи с параметрами больше/меньше",
+            "\nПример команд: \n/add Ягода 607 " + DealType.SELL.getType() + " " + MathStatement.LESS.getDescription() + "52000 " +
+                    "\n/add Семечко 608 " + DealType.BUY.getType() + " " + MathStatement.MORE.getDescription() + "20000."
+    ),
+    REMOVE_GOOD("/remove", "Удалить товар из списка Ваших товаров. ", "\nПример команды: /remove 607"),
+    GOODS_LIST("/list", "Показать список Ваших товаров. ", "/list"),
+    DELETE_USER("/delete_user", "Удалить всю информацию о вашем пользователе. ", "/delete_user"),
+    GOOD_INFO("/info", "Показать всю информацию о товаре: среднюю цену покупки и продажи, а также все активные магазины с товаром. ", "\nПример команды: /info 607");
 
     private final String command;
     private final String description;

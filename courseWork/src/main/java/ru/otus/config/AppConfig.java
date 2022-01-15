@@ -1,15 +1,13 @@
 package ru.otus.config;
 
-import org.springframework.context.annotation.Bean;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.bot.Bot;
-import ru.otus.bot.CommandsHandler;
 
-@Configuration
+@Data
+@Configuration("appConfig")
+@ConfigurationProperties(prefix = "app")
 public class AppConfig {
-
-    @Bean
-    public Bot bot(BotConfig botConfig, CommandsHandler commandsHandler) {
-        return new Bot(botConfig.getName(), botConfig.getToken(), commandsHandler);
-    }
+    private String url;
+    private long checkTime;
 }

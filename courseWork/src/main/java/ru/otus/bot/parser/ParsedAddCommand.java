@@ -6,7 +6,7 @@ import ru.otus.enums.DealType;
 import ru.otus.enums.MathStatement;
 
 @Getter
-public class ParsedAddCommand extends ParsedCommand{
+public class ParsedAddCommand extends ParsedCommand {
 
     private final int PARAMS_AMOUNT = 5;
     private final String COMMAND_NAME = Commands.ADD_GOOD.getCommand();
@@ -43,7 +43,14 @@ public class ParsedAddCommand extends ParsedCommand{
 
     private void addDealType(String[] strings) {
         try {
-            dealType = DealType.valueOf(strings[2].toUpperCase());
+            var userDealType = strings[2].toUpperCase();
+            if (userDealType.contains("ПО") || userDealType.contains("КУ") || userDealType.contains("BUY")) {
+                dealType = DealType.BUY;
+            } else if (userDealType.contains("ПР") || userDealType.contains("SELL")) {
+                dealType = DealType.SELL;
+            } else {
+                makeException(COMMAND_NAME);
+            }
         } catch (Exception ex) {
             makeException(COMMAND_NAME);
         }
@@ -51,7 +58,14 @@ public class ParsedAddCommand extends ParsedCommand{
 
     private void addMathStatement(String[] strings) {
         try {
-            mathStatement = MathStatement.valueOf(strings[3].toUpperCase());
+            var userStatement = strings[3].toUpperCase();
+            if (userStatement.contains("Б") || userStatement.contains("OR")) {
+                mathStatement = MathStatement.MORE;
+            } else if (userStatement.contains("МЕ") || userStatement.contains("ЕНЬ")|| userStatement.contains("ES")) {
+                mathStatement = MathStatement.LESS;
+            } else {
+                makeException(COMMAND_NAME);
+            }
         } catch (Exception ex) {
             makeException(COMMAND_NAME);
         }

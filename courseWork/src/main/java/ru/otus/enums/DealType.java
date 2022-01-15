@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum DealType {
-    SELL("продажа"),
-    BUY("покупка");
+    SELL("Продажа"),
+    BUY("Покупка");
 
     private final String type;
 

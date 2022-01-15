@@ -16,6 +16,8 @@ public class AppUser {
     private Long id;
     @NonNull
     private Long telegramId;
+    @NonNull
+    private Long chatId;
 
     private String firstName;
     private String lastName;
@@ -24,16 +26,17 @@ public class AppUser {
     private boolean isActive;
 
     @PersistenceConstructor
-    public AppUser(Long id, @NonNull Long telegramId, String firstName, String lastName, String userName, boolean isActive) {
+    public AppUser(Long id, @NonNull Long telegramId, @NonNull Long chatId, String firstName, String lastName, String userName, boolean isActive) {
         this.id = id;
         this.telegramId = telegramId;
+        this.chatId = chatId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.isActive = isActive;
     }
 
-    public AppUser(@NonNull Long telegramId, String firstName, String lastName, String userName, boolean isActive) {
-        this(null, telegramId, firstName, lastName, userName, isActive);
+    public AppUser(@NonNull Long telegramId, @NonNull Long chatId, String firstName, String lastName, String userName, boolean isActive) {
+        this(null, telegramId, chatId, firstName, lastName, userName, isActive);
     }
 }

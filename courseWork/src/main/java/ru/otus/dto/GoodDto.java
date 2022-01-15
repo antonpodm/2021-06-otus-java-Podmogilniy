@@ -1,15 +1,15 @@
 package ru.otus.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.otus.crm.model.Good;
 import ru.otus.enums.DealType;
 import ru.otus.enums.MathStatement;
 
+import java.util.StringJoiner;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoodDto {
@@ -32,16 +32,17 @@ public class GoodDto {
         this.name = good.getName();
     }
 
-    public Good toGood() {
-        return new Good(id, userId, outerId, dealType, mathStatement, price, name);
-    }
-
     @Override
     public String toString() {
-        return "Товар " + name +
-                " с id " + outerId +
-                ", тип сделки " + dealType.getType() +
-                " " + mathStatement.getDescription() +
-                " " + price + ".";
+        var joiner = new StringJoiner(" ");
+        return joiner
+                .add("Товар")
+                .add(name)
+                .add("с id")
+                .add(outerId + ",")
+                .add("тип сделки")
+                .add(dealType.getType())
+                .add(mathStatement.getDescription())
+                .add(price + ".").toString();
     }
 }

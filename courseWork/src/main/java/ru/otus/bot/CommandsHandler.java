@@ -2,18 +2,23 @@ package ru.otus.bot;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import ru.otus.bot.parser.ParsedAddCommand;
+import ru.otus.bot.parser.ParsedInfoCommand;
 import ru.otus.bot.parser.ParsedRemoveCommand;
 import ru.otus.crm.model.AppUser;
 import ru.otus.crm.model.Good;
 import ru.otus.crm.service.DBServiceGood;
 import ru.otus.crm.service.DBServiceAppUser;
+import ru.otus.crm.service.DBServiceGoodInfo;
 import ru.otus.dto.GoodDto;
+import ru.otus.dto.GoodInfoDto;
 import ru.otus.enums.Commands;
 import ru.otus.exceptions.AppUserNotFoundException;
 import ru.otus.exceptions.CommandAlreadyDoneException;
 import ru.otus.exceptions.GoodNotFoundException;
+import ru.otus.exceptions.GoodsInfoNotFoundException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,9 +30,10 @@ import java.util.StringJoiner;
 public class CommandsHandler {
 
     private final DBServiceGood dbServiceGood;
+    private final DBServiceGoodInfo dbServiceGoodInfo;
     private final DBServiceAppUser dbServiceAppUser;
 
-    public void handleStartCommand(User tgUser) {
+    public void handleStartCommand(User tgUser, Chat chat) {
         var userOptional = findUser(tgUser);
         AppUser.AppUserBuilder builder;
 
@@ -42,6 +48,7 @@ public class CommandsHandler {
         }
 
         var appUser = builder.firstName(tgUser.getFirstName())
+                .chatId(chat.getId())
                 .lastName(tgUser.getLastName())
                 .userName(tgUser.getUserName())
                 .isActive(true).build();
@@ -122,6 +129,21 @@ public class CommandsHandler {
         } else {
             var appUser = userOptional.get();
             dbServiceAppUser.delete(appUser);
+        }
+    }
+
+
+    public String handleInfoCommand(User tgUser, String[] strings) {
+        var userOptional = findUser(tgUser);
+        if (userOptional.isEmpty()) {
+            throw new AppUserNotFoundException(tgUser.getId());
+        } else {
+            var parsedCommand = new ParsedInfoCommand(strings);
+            var existingGoodsInfo = dbServiceGoodInfo.findByOuterId(parsedCommand.getOuterId());
+            if (existingGoodsInfo.isEmpty()) {
+                throw new GoodsInfoNotFoundException(parsedCommand.getOuterId());
+            }
+            return new GoodInfoDto(existingGoodsInfo.get()).toString();
         }
     }
 

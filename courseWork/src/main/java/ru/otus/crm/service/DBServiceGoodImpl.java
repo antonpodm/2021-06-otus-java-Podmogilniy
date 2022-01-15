@@ -10,10 +10,11 @@ import ru.otus.sessionmanager.TransactionManager;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class DBServiceGoodImpl implements DBServiceGood{
+public class DBServiceGoodImpl implements DBServiceGood {
 
     private static final Logger log = LoggerFactory.getLogger(DBServiceGoodImpl.class);
     private final TransactionManager transactionManager;
@@ -41,11 +42,23 @@ public class DBServiceGoodImpl implements DBServiceGood{
     }
 
     @Override
+    public Set<Long> findUniqOuterIds() {
+        var uniqIds = goodRepository.findUniqOuterIds();
+        log.info("goods outer ids: {}", uniqIds);
+        return uniqIds;
+    }
+
+    @Override
     public Good save(Good good) {
         return transactionManager.doInTransaction(() -> {
-            var savedGood = goodRepository.save(good);
-            log.info("saved good: {}", savedGood);
-            return savedGood;
+            try {
+                var savedGood = goodRepository.save(good);
+                log.info("saved good: {}", savedGood);
+                return savedGood;
+            } catch (Exception ex) {
+                log.error(ex.toString(), ex);
+            }
+            return null;
         });
     }
 

@@ -20,9 +20,9 @@ public class DBServiceAppUserImpl implements DBServiceAppUser {
 
     @Override
     public List<AppUser> findAll() {
-        var profileList = appUserRepository.findAll();
-        log.info("profileList:{}", profileList);
-        return profileList;
+        var appUsers = appUserRepository.findAll();
+        log.info("users:{}", appUsers);
+        return appUsers;
     }
 
     @Override
@@ -30,6 +30,13 @@ public class DBServiceAppUserImpl implements DBServiceAppUser {
         var user = appUserRepository.findById(id);
         log.info("user: {}", user);
         return user;
+    }
+
+    @Override
+    public List<AppUser> findByActive(boolean active) {
+        var users = appUserRepository.findByIsActive(active);
+        log.info("users by active:{}", users);
+        return users;
     }
 
     @Override
@@ -42,9 +49,14 @@ public class DBServiceAppUserImpl implements DBServiceAppUser {
     @Override
     public AppUser save(AppUser appUser) {
         return transactionManager.doInTransaction(() -> {
-            var savedUser = appUserRepository.save(appUser);
-            log.info("saved user: {}", savedUser);
-            return savedUser;
+            try {
+                var savedUser = appUserRepository.save(appUser);
+                log.info("saved user: {}", savedUser);
+                return savedUser;
+            } catch (Exception ex) {
+                log.error(ex.toString(), ex);
+            }
+            return null;
         });
     }
 

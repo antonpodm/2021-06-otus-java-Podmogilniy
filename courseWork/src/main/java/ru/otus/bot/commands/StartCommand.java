@@ -24,7 +24,7 @@ public class StartCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         var userName = BotHelper.makeUserName(user);
         try {
-            commandsHandler.handleStartCommand(user);
+            commandsHandler.handleStartCommand(user, chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName, COMMAND_TEXT);
         } catch (CommandAlreadyDoneException ex) {
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName, ERROR_COMMAND_TEXT);

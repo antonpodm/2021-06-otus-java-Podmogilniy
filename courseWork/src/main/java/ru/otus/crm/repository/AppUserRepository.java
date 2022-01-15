@@ -11,5 +11,7 @@ public interface AppUserRepository extends CrudRepository<AppUser, Long> {
     @Override
     List<AppUser> findAll();
 
+    List<AppUser> findByIsActive(boolean isActive);
+
     Optional<AppUser> findByTelegramId(Long telegramId);
 }

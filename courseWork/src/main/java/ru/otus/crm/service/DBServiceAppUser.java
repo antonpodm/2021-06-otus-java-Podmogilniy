@@ -11,6 +11,8 @@ public interface DBServiceAppUser {
 
     Optional<AppUser> findById(Long id);
 
+    List<AppUser> findByActive(boolean active);
+
     Optional<AppUser> findByTelegramId(Long telegramId);
 
     AppUser save(AppUser appUser);
