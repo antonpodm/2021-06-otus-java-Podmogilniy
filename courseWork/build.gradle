@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '2.6.2'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -11,7 +12,7 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     implementation 'org.telegram:telegrambotsextensions:5.6.0'
     implementation("ch.qos.logback:logback-classic")
-    implementation('org.jsoup:jsoup:1.7.2')
+    implementation('org.jsoup:jsoup:1.14.3')
 
     implementation("org.postgresql:postgresql")
     implementation('org.flywaydb:flyway-core')

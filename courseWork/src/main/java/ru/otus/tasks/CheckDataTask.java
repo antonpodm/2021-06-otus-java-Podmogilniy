@@ -9,7 +9,6 @@ import ru.otus.services.HtmlParserService;
 import ru.otus.crm.service.DBServiceGood;
 import ru.otus.services.SendDataService;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -36,7 +35,7 @@ public class CheckDataTask {
                 CompletableFuture.runAsync(() -> {
                     try {
                         htmlParserService.loadGoodData(id);
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         log.info("load data of {} ", id, ex);
                     } finally {
                         latch.countDown();
@@ -44,7 +43,7 @@ public class CheckDataTask {
                 }, threadPool);
             });
             latch.await();
-            sendDataService.sendGoodsDataToUsers();
+            sendDataService.prepareGoodsDataAndSend();
         } catch (Exception ex) {
             log.info("checkData", ex);
         }

@@ -11,7 +11,7 @@ import ru.otus.toolbox.BotHelper;
 
 public class ListCommand extends ServiceCommand {
     private final CommandsHandler commandsHandler;
-    protected static final String ERROR_GOODS_NOT_FOUND_TEXT = "В вашем списке товаров отсутствуют товары. Для добавления товара напишите боту " + Commands.ADD_GOOD.getCommand();
+    protected static final String ERROR_GOODS_NOT_FOUND_TEXT = "В вашем списке товаров отсутствуют записи. Для добавления товара напишите боту " + Commands.ADD_GOOD.getCommand();
 
     public ListCommand(CommandsHandler commandsHandler) {
         super(Commands.GOODS_LIST);

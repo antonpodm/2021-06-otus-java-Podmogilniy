@@ -15,11 +15,8 @@ import ru.otus.dto.MessagesDto;
 import ru.otus.dto.ShopDto;
 import ru.otus.enums.MathStatement;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +24,7 @@ import java.util.stream.Collectors;
 public class SendDataService {
 
     private static final Logger log = LoggerFactory.getLogger(SendDataService.class);
+    private static final Executor threadPool = Executors.newFixedThreadPool(20);
 
     private final DBServiceAppUser dbServiceAppUser;
     private final DBServiceGood dbServiceGood;
@@ -34,34 +32,96 @@ public class SendDataService {
     private final DBServiceSentData dbServiceSentData;
     private final Bot bot;
 
-    public void sendGoodsDataToUsers() {
-        var users = dbServiceAppUser.findByActive(true);
+    public void prepareGoodsDataAndSend() throws InterruptedException {
+        var usersGoods = loadUsersGoods();
+        var goodsIds = findGoodsIds(usersGoods);
+        var goodsInfo = loadGoodsInfo(goodsIds);
+        sendGoodsDataToUsers(usersGoods, goodsInfo);
+    }
+
+    private Map<AppUser, List<Good>> loadUsersGoods() throws InterruptedException {
         var usersGoods = new ConcurrentHashMap<AppUser, List<Good>>();
-        var goodsIds = new HashSet<Long>();
 
-        for (var user : users) {
-            var goods = dbServiceGood.findByUserId(user.getId());
-            usersGoods.put(user, goods);
-            goodsIds.addAll(goods.stream().map(Good::getOuterId).toList());
-        }
+        var users = dbServiceAppUser.findByActive(true);
+        var latch = new CountDownLatch(users.size());
 
-        var goodsInfos = new ConcurrentHashMap<Long, GoodInfo>();
+        users.forEach(user -> {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    var goods = dbServiceGood.findByUserId(user.getId());
+                    usersGoods.put(user, goods);
+                } catch (Exception ex) {
+                    log.info("loading users goods {} ", user, ex);
+                } finally {
+                    latch.countDown();
+                }
+            }, threadPool);
+        });
 
-        for (var id : goodsIds) {
-            var goodInfoOptional = dbServiceGoodInfo.findByOuterId(id);
-            if (goodInfoOptional.isPresent()) {
-                var good = goodInfoOptional.get();
-                goodsInfos.put(good.getOuterId(), good);
-            }
-        }
+        latch.await();
 
-        for (var user : usersGoods.keySet()) {
-            try {
-                sendGoodDataToUser(user, usersGoods.get(user), goodsInfos);
-            } catch (Exception ex) {
-                log.error("sendGoodDataToUser", ex);
-            }
-        }
+        return usersGoods;
+    }
+
+    private Set<Long> findGoodsIds(Map<AppUser, List<Good>> usersGoods) {
+        Set<Long> goodsIds = ConcurrentHashMap.newKeySet();
+        usersGoods
+                .values()
+                .forEach(
+                        goods -> goodsIds
+                                .addAll(
+                                        goods
+                                                .stream()
+                                                .map(Good::getOuterId)
+                                                .toList()
+                                )
+                );
+        return goodsIds;
+    }
+
+    private Map<Long, GoodInfo> loadGoodsInfo(Set<Long> goodsIds) throws InterruptedException {
+        var goodsInfo = new ConcurrentHashMap<Long, GoodInfo>();
+
+        var latch = new CountDownLatch(goodsIds.size());
+
+        goodsIds.forEach(id -> {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    var goodInfoOptional = dbServiceGoodInfo.findByOuterId(id);
+                    if (goodInfoOptional.isPresent()) {
+                        var good = goodInfoOptional.get();
+                        goodsInfo.put(id, good);
+                    }
+                } catch (Exception ex) {
+                    log.info("loadGoodsInfo {} ", id, ex);
+                } finally {
+                    latch.countDown();
+                }
+            }, threadPool);
+        });
+
+        latch.await();
+
+        return goodsInfo;
+    }
+
+    private void sendGoodsDataToUsers(Map<AppUser, List<Good>> usersGoods, Map<Long, GoodInfo> goodsInfo) throws InterruptedException {
+        var latch = new CountDownLatch(usersGoods.size());
+
+        usersGoods.entrySet()
+                .forEach(entry -> {
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            sendGoodDataToUser(entry.getKey(), entry.getValue(), goodsInfo);
+                        } catch (Exception ex) {
+                            log.info("sendGoodDataToUser {} ", entry, ex);
+                        } finally {
+                            latch.countDown();
+                        }
+                    }, threadPool);
+                });
+
+        latch.await();
     }
 
     private void sendGoodDataToUser(AppUser user, List<Good> userGoods, Map<Long, GoodInfo> goodInfos) {

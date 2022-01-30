@@ -1,6 +1,5 @@
 package ru.otus.crm.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -12,9 +11,7 @@ import ru.otus.enums.DealType;
 @Table("shops")
 @Getter
 @Builder(toBuilder = true)
-//@AllArgsConstructor(onConstructor_ = {
-//        @PersistenceConstructor
-//})
+
 public class Shop {
 
     @Id

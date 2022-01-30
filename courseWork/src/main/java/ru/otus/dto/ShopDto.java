@@ -19,7 +19,6 @@ public class ShopDto implements Comparable<ShopDto> {
         this.amount = shop.getAmount();
     }
 
-
     @Override
     public String toString() {
         return "Цена: " + price + " количество: " + amount;

@@ -17,12 +17,10 @@ import ru.otus.services.pages.SellPage;
 import ru.otus.enums.DealType;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Service()
+@Service
 @RequiredArgsConstructor
 public class HtmlParserService {
 

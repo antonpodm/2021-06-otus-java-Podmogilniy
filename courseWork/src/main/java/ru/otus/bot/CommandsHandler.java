@@ -20,8 +20,6 @@ import ru.otus.exceptions.CommandAlreadyDoneException;
 import ru.otus.exceptions.GoodNotFoundException;
 import ru.otus.exceptions.GoodsInfoNotFoundException;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
@@ -57,97 +55,92 @@ public class CommandsHandler {
 
     public void handleStopCommand(User tgUser) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
-        } else {
-            var appUser = userOptional.get();
-            if (!appUser.isActive()) {
-                throw new CommandAlreadyDoneException(Commands.STOP.getCommand());
-            }
-            appUser = appUser.toBuilder().isActive(false).build();
-            dbServiceAppUser.save(appUser);
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var appUser = userOptional.get();
+        if (!appUser.isActive()) {
+            throw new CommandAlreadyDoneException(Commands.STOP.getCommand());
         }
+        appUser = appUser.toBuilder().isActive(false).build();
+        dbServiceAppUser.save(appUser);
     }
 
     public void handleAddCommand(User tgUser, String[] strings) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var appUser = userOptional.get();
+        var parsedCommand = new ParsedAddCommand(strings);
+        var existingGood = dbServiceGood.findByUserIdAndOuterId(appUser.getId(), parsedCommand.getOuterId());
+        Good good;
+        if (existingGood.isPresent()) {
+            good = existingGood.get().updateFromCommand(parsedCommand);
         } else {
-            var appUser = userOptional.get();
-            var parsedCommand = new ParsedAddCommand(strings);
-            var existingGood = dbServiceGood.findByUserIdAndOuterId(appUser.getId(), parsedCommand.getOuterId());
-            Good good;
-            if (existingGood.isPresent()) {
-                good = existingGood.get().updateFromCommand(parsedCommand);
-            } else {
-                good = Good.builder().userId(appUser.getId()).build().updateFromCommand(parsedCommand);
-            }
-            dbServiceGood.save(good);
+            good = Good.builder().userId(appUser.getId()).build().updateFromCommand(parsedCommand);
         }
+        dbServiceGood.save(good);
     }
 
     public void handleRemoveCommand(User tgUser, String[] strings) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var appUser = userOptional.get();
+        var parsedCommand = new ParsedRemoveCommand(strings);
+        var existingGood = dbServiceGood.findByUserIdAndOuterId(appUser.getId(), parsedCommand.getOuterId());
+        if (existingGood.isEmpty()) {
+            throw new GoodNotFoundException(parsedCommand.getOuterId());
         } else {
-            var appUser = userOptional.get();
-            var parsedCommand = new ParsedRemoveCommand(strings);
-            var existingGood = dbServiceGood.findByUserIdAndOuterId(appUser.getId(), parsedCommand.getOuterId());
-            if (existingGood.isEmpty()) {
-                throw new GoodNotFoundException(parsedCommand.getOuterId());
-            } else {
-                dbServiceGood.delete(existingGood.get());
-            }
+            dbServiceGood.delete(existingGood.get());
         }
     }
 
     public String handleListCommand(User tgUser) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
-        } else {
-            var appUser = userOptional.get();
-            var existingGoods = dbServiceGood.findByUserId(appUser.getId());
-            if (existingGoods.isEmpty()) {
-                throw new GoodNotFoundException(-1L);
-            }
-            var joiner = new StringJoiner("\n");
-            var goodsDto = existingGoods.stream().map(GoodDto::new).map(GoodDto::toString).toList();
-            for (String goodString : goodsDto) {
-                joiner.add(goodString);
-            }
-            return joiner.toString();
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var appUser = userOptional.get();
+        var existingGoods = dbServiceGood.findByUserId(appUser.getId());
+        if (existingGoods.isEmpty()) {
+            throw new GoodNotFoundException(-1L);
         }
+        var joiner = new StringJoiner("\n");
+        var goodsDto = existingGoods.stream().map(GoodDto::new).map(GoodDto::toString).toList();
+        for (String goodString : goodsDto) {
+            joiner.add(goodString);
+        }
+        return joiner.toString();
+
     }
 
     public void handleDeleteUserCommand(User tgUser) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
-        } else {
-            var appUser = userOptional.get();
-            dbServiceAppUser.delete(appUser);
-        }
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var appUser = userOptional.get();
+        dbServiceAppUser.delete(appUser);
     }
 
 
     public String handleInfoCommand(User tgUser, String[] strings) {
         var userOptional = findUser(tgUser);
-        if (userOptional.isEmpty()) {
-            throw new AppUserNotFoundException(tgUser.getId());
-        } else {
-            var parsedCommand = new ParsedInfoCommand(strings);
-            var existingGoodsInfo = dbServiceGoodInfo.findByOuterId(parsedCommand.getOuterId());
-            if (existingGoodsInfo.isEmpty()) {
-                throw new GoodsInfoNotFoundException(parsedCommand.getOuterId());
-            }
-            return new GoodInfoDto(existingGoodsInfo.get()).toString();
+        throwExceptionIfNotExists(tgUser, userOptional);
+        var parsedCommand = new ParsedInfoCommand(strings);
+        var existingGoodsInfo = dbServiceGoodInfo.findByOuterId(parsedCommand.getOuterId());
+        if (existingGoodsInfo.isEmpty()) {
+            throw new GoodsInfoNotFoundException(parsedCommand.getOuterId());
         }
+        return new GoodInfoDto(existingGoodsInfo.get()).toString();
     }
 
     private Optional<AppUser> findUser(User user) {
         return dbServiceAppUser.findByTelegramId(user.getId());
+    }
+
+    /**
+     * Throws AppUserNotFoundException if userOptional is empty
+     *
+     * @param tgUser       id for creating exception
+     * @param userOptional optional for checking
+     */
+    private void throwExceptionIfNotExists(User tgUser, Optional<AppUser> userOptional) {
+        if (userOptional.isEmpty()) {
+            throw new AppUserNotFoundException(tgUser.getId());
+        }
     }
 }
