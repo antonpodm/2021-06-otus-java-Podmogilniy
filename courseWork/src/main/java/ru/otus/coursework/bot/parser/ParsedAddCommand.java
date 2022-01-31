@@ -5,15 +5,20 @@ import ru.otus.coursework.dto.enums.Commands;
 import ru.otus.coursework.dto.enums.DealType;
 import ru.otus.coursework.dto.enums.MathStatement;
 
-@Getter
+
 public class ParsedAddCommand extends ParsedCommand {
 
     private final int PARAMS_AMOUNT = 5;
     private final String COMMAND_NAME = Commands.ADD_GOOD.getCommand();
+    @Getter
     private String name;
+    @Getter
     private Long outerId;
+    @Getter
     private DealType dealType;
+    @Getter
     private MathStatement mathStatement;
+    @Getter
     private Long price;
 
     public ParsedAddCommand(String[] strings) {
@@ -61,7 +66,7 @@ public class ParsedAddCommand extends ParsedCommand {
             var userStatement = strings[3].toUpperCase();
             if (userStatement.contains("Б") || userStatement.contains("OR")) {
                 mathStatement = MathStatement.MORE;
-            } else if (userStatement.contains("МЕ") || userStatement.contains("ЕНЬ")|| userStatement.contains("ES")) {
+            } else if (userStatement.contains("МЕ") || userStatement.contains("ЕНЬ") || userStatement.contains("ES")) {
                 mathStatement = MathStatement.LESS;
             } else {
                 makeException(COMMAND_NAME);

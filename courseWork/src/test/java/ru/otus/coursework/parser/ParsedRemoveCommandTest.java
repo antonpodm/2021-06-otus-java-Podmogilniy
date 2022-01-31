@@ -7,21 +7,20 @@ import ru.otus.coursework.exceptions.CommandFormatException;
 
 public class ParsedRemoveCommandTest {
 
+    private static final String ID = "6070";
+    private static final String NOT_ID = "qwert2y";
+    private static final String[] rightFormatCommand = {ID};
+    private static final String[] wrongFormatCommand = {NOT_ID};
+
     @Test
     void shouldParseCommandSingleNumberParam() {
-        var id = 607L;
-        var command = new String[1];
-        command[0] = String.valueOf(id);
-        var parsedCommand = new ParsedRemoveCommand(command);
-        Assertions.assertEquals(id, parsedCommand.getOuterId());
+        var parsedCommand = new ParsedRemoveCommand(rightFormatCommand);
+        Assertions.assertEquals(Long.valueOf(ID), parsedCommand.getOuterId());
     }
 
     @Test
     void shouldThrowCommandFormatExceptionOnStringParam() {
-        var id = "qwerty";
-        var command = new String[1];
-        command[0] = id;
-        Assertions.assertThrows(CommandFormatException.class, () -> new ParsedRemoveCommand(command));
+        Assertions.assertThrows(CommandFormatException.class, () -> new ParsedRemoveCommand(wrongFormatCommand));
     }
 
     @Test
@@ -32,11 +31,10 @@ public class ParsedRemoveCommandTest {
 
     @Test
     void shouldParseCommandOnMoreThanOneParam() {
-        var id = 607L;
         var command = new String[2];
-        command[0] = String.valueOf(id);
-        command[1] = "param";
+        command[0] = ID;
+        command[1] = NOT_ID;
         var parsedCommand = new ParsedRemoveCommand(command);
-        Assertions.assertEquals(id, parsedCommand.getOuterId());
+        Assertions.assertEquals(Long.valueOf(ID), parsedCommand.getOuterId());
     }
 }

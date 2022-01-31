@@ -2,6 +2,9 @@ package ru.otus.coursework.dto.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 @Getter
 public enum DealType {
     SELL("Продажа"),
@@ -11,5 +14,11 @@ public enum DealType {
 
     DealType(String type) {
         this.type = type;
+    }
+
+    public static Optional<DealType> findByType(String type){
+        return Arrays.stream(DealType.values())
+                .filter(dealType -> dealType.getType().equals(type))
+                .findFirst();
     }
 }
