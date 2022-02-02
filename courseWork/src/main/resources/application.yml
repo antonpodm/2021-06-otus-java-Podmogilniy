@@ -7,7 +7,12 @@ spring:
     enabled: true
 server:
   port: 8080
-
 logging:
   level:
-    org.springframework.jdbc.core.JdbcTemplate: TRACE
+    org.springframework.jdbc.core.JdbcTemplate: ERROR
+app:
+  url: https://www.originsro-market.de/sells/item_id/
+  checkTime: 300000
+bot:
+  name: MarketObserver
+  token: 123
