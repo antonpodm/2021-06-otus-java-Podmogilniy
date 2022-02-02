@@ -1,7 +1,7 @@
 package ru.otus.coursework.services.pages;
 
 import org.springframework.stereotype.Component;
-import ru.otus.coursework.dto.enums.DealType;
+import ru.otus.coursework.enums.DealType;
 
 @Component
 public class BuyPage extends PageType {

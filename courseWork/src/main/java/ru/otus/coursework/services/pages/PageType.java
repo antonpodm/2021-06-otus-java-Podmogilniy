@@ -2,7 +2,7 @@ package ru.otus.coursework.services.pages;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import ru.otus.coursework.dto.enums.DealType;
+import ru.otus.coursework.enums.DealType;
 
 @RequiredArgsConstructor
 @Getter

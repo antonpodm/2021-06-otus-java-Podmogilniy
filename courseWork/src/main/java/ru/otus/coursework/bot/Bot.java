@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.otus.coursework.bot.commands.*;
 import ru.otus.coursework.crm.model.AppUser;
-import ru.otus.coursework.dto.enums.Commands;
+import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.SendMessageException;
 
 import java.util.List;

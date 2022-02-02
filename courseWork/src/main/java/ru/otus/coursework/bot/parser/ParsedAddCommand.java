@@ -1,9 +1,9 @@
 package ru.otus.coursework.bot.parser;
 
 import lombok.Getter;
-import ru.otus.coursework.dto.enums.Commands;
-import ru.otus.coursework.dto.enums.DealType;
-import ru.otus.coursework.dto.enums.MathStatement;
+import ru.otus.coursework.enums.Commands;
+import ru.otus.coursework.enums.DealType;
+import ru.otus.coursework.enums.MathStatement;
 
 
 public class ParsedAddCommand extends ParsedCommand {

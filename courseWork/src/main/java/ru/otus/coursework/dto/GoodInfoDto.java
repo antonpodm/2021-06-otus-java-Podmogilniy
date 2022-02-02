@@ -2,7 +2,7 @@ package ru.otus.coursework.dto;
 
 import ru.otus.coursework.crm.model.GoodInfo;
 import ru.otus.coursework.crm.model.Shop;
-import ru.otus.coursework.dto.enums.DealType;
+import ru.otus.coursework.enums.DealType;
 
 import java.util.Comparator;
 import java.util.List;

@@ -14,7 +14,7 @@ import ru.otus.coursework.crm.model.GoodInfo;
 import ru.otus.coursework.crm.model.Shop;
 import ru.otus.coursework.crm.service.DBServiceGoodInfo;
 import ru.otus.coursework.services.pages.SellPage;
-import ru.otus.coursework.dto.enums.DealType;
+import ru.otus.coursework.enums.DealType;
 
 import java.io.IOException;
 import java.util.HashSet;

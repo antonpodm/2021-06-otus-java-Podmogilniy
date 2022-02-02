@@ -14,7 +14,7 @@ import ru.otus.coursework.crm.service.DBServiceAppUser;
 import ru.otus.coursework.crm.service.DBServiceGoodInfo;
 import ru.otus.coursework.dto.GoodDto;
 import ru.otus.coursework.dto.GoodInfoDto;
-import ru.otus.coursework.dto.enums.Commands;
+import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandAlreadyDoneException;
 import ru.otus.coursework.exceptions.GoodNotFoundException;

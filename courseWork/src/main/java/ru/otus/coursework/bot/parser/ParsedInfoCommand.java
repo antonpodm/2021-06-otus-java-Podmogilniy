@@ -1,7 +1,7 @@
 package ru.otus.coursework.bot.parser;
 
 import lombok.Getter;
-import ru.otus.coursework.dto.enums.Commands;
+import ru.otus.coursework.enums.Commands;
 
 
 public class ParsedInfoCommand extends ParsedCommand {

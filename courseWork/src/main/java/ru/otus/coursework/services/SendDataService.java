@@ -13,7 +13,7 @@ import ru.otus.coursework.crm.service.DBServiceSentData;
 import ru.otus.coursework.dto.MessageDto;
 import ru.otus.coursework.dto.MessagesDto;
 import ru.otus.coursework.dto.ShopDto;
-import ru.otus.coursework.dto.enums.MathStatement;
+import ru.otus.coursework.enums.MathStatement;
 
 import java.util.*;
 import java.util.concurrent.*;

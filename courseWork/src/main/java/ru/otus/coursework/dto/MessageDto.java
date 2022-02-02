@@ -1,6 +1,6 @@
 package ru.otus.coursework.dto;
 
-import ru.otus.coursework.dto.enums.DealType;
+import ru.otus.coursework.enums.DealType;
 
 import java.util.ArrayList;
 import java.util.Collections;

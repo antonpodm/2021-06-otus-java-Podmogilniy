@@ -3,8 +3,8 @@ package ru.otus.coursework.parser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.otus.coursework.bot.parser.ParsedAddCommand;
-import ru.otus.coursework.dto.enums.DealType;
-import ru.otus.coursework.dto.enums.MathStatement;
+import ru.otus.coursework.enums.DealType;
+import ru.otus.coursework.enums.MathStatement;
 import ru.otus.coursework.exceptions.CommandFormatException;
 
 import java.util.Arrays;

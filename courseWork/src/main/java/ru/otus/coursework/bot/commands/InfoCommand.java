@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import ru.otus.coursework.bot.CommandsHandler;
-import ru.otus.coursework.dto.enums.Commands;
+import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandFormatException;
 import ru.otus.coursework.exceptions.GoodsInfoNotFoundException;

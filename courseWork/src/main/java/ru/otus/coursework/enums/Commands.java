@@ -1,4 +1,4 @@
-package ru.otus.coursework.dto.enums;
+package ru.otus.coursework.enums;
 
 import lombok.Getter;
 

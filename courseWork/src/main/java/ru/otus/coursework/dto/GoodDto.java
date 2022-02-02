@@ -1,8 +1,8 @@
 package ru.otus.coursework.dto;
 
 import ru.otus.coursework.crm.model.Good;
-import ru.otus.coursework.dto.enums.DealType;
-import ru.otus.coursework.dto.enums.MathStatement;
+import ru.otus.coursework.enums.DealType;
+import ru.otus.coursework.enums.MathStatement;
 
 import java.util.StringJoiner;
 
