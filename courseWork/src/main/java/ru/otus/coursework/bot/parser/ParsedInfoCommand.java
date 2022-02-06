@@ -3,9 +3,7 @@ package ru.otus.coursework.bot.parser;
 import lombok.Getter;
 import ru.otus.coursework.enums.Commands;
 
-
 public class ParsedInfoCommand extends ParsedCommand {
-
 
     private final int PARAMS_AMOUNT = 1;
     private final String COMMAND_NAME = Commands.GOOD_INFO.getCommand();
@@ -21,7 +19,7 @@ public class ParsedInfoCommand extends ParsedCommand {
         try {
             outerId = Long.valueOf(strings[0]);
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 }

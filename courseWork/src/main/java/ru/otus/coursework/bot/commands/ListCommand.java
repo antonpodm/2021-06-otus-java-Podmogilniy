@@ -7,7 +7,7 @@ import ru.otus.coursework.bot.CommandsHandler;
 import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.GoodNotFoundException;
-import ru.otus.coursework.toolbox.BotHelper;
+import ru.otus.coursework.bot.toolbox.BotHelper;
 
 public class ListCommand extends ServiceCommand {
     private final CommandsHandler commandsHandler;

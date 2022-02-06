@@ -19,7 +19,7 @@ import java.util.List;
 public class Bot extends TelegramLongPollingCommandBot {
 
     private static final Logger log = LoggerFactory.getLogger(Bot.class);
-    private static final String COMMAND_TEXT = "Для вызова справки напишите боту " + Commands.HELP.getCommand();
+    private static final String ASK_FOR_HELP_COMMAND_TEXT = "Для вызова справки напишите боту " + Commands.HELP.getCommand();
 
     private final String name;
     private final String token;
@@ -27,6 +27,10 @@ public class Bot extends TelegramLongPollingCommandBot {
     public Bot(String name, String token, CommandsHandler commandsHandler) {
         this.name = name;
         this.token = token;
+        registerCommands(commandsHandler);
+    }
+
+    private void registerCommands(CommandsHandler commandsHandler) {
         register(new StartCommand(commandsHandler));
         register(new StopCommand(commandsHandler));
         register(new AddCommand(commandsHandler));
@@ -45,13 +49,8 @@ public class Bot extends TelegramLongPollingCommandBot {
     @Override
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String chatId = update.getMessage().getChatId().toString();
-
-            SendMessage sm = new SendMessage();
-            sm.enableMarkdown(true);
-            sm.setChatId(chatId);
-            sm.setText(COMMAND_TEXT);
-
+            var chatId = update.getMessage().getChatId().toString();
+            var sm = createMessage(chatId, ASK_FOR_HELP_COMMAND_TEXT);
             try {
                 execute(sm);
             } catch (TelegramApiException e) {
@@ -61,16 +60,20 @@ public class Bot extends TelegramLongPollingCommandBot {
     }
 
     public void sendToUser(@NonNull AppUser user, @NonNull String message) {
-        SendMessage sm = new SendMessage();
-        sm.enableMarkdown(true);
-        sm.setChatId(user.getChatId().toString());
-        sm.setText(message);
-
+        var chatId = user.getChatId().toString();
+        var sm = createMessage(chatId, message);
         try {
             execute(sm);
         } catch (TelegramApiException e) {
             throw new SendMessageException(message, e);
         }
+    }
+
+    private SendMessage createMessage(String chatId, String message) {
+        var sm = new SendMessage();
+        sm.setChatId(chatId);
+        sm.setText(message);
+        return sm;
     }
 
     @Override

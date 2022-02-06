@@ -2,6 +2,7 @@ package ru.otus.coursework.crm.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.relational.core.mapping.Table;
@@ -12,7 +13,8 @@ import ru.otus.coursework.enums.MathStatement;
 
 @Table("goods")
 @Getter
-@Builder
+@Builder(toBuilder = true)
+@ToString
 public class Good {
 
     @Id

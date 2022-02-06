@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import ru.otus.coursework.bot.CommandsHandler;
 import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.CommandAlreadyDoneException;
-import ru.otus.coursework.toolbox.BotHelper;
+import ru.otus.coursework.bot.toolbox.BotHelper;
 
 
 public class StartCommand extends ServiceCommand {

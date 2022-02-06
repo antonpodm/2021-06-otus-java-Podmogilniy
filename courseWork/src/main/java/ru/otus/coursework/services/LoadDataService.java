@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.otus.coursework.config.AppConfig;
+import ru.otus.coursework.crm.service.DBServiceGood;
 import ru.otus.coursework.services.pages.BuyPage;
 import ru.otus.coursework.services.pages.PageType;
 import ru.otus.coursework.crm.model.GoodInfo;
@@ -19,20 +20,43 @@ import ru.otus.coursework.enums.DealType;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
-public class HtmlParserService {
+public class LoadDataService {
 
-    private static final Logger log = LoggerFactory.getLogger(HtmlParserService.class);
+    private static final Logger log = LoggerFactory.getLogger(LoadDataService.class);
+    private static final Executor threadPool = Executors.newFixedThreadPool(20);
     private static final String averageLastWeekString = "Average last week: ";
 
+    private final DBServiceGood dbServiceGood;
     private final AppConfig appConfig;
     private final DBServiceGoodInfo dbServiceGoodInfo;
     private final BuyPage buyPage;
     private final SellPage sellPage;
 
-    public void loadGoodData(long id) throws IOException {
+    public void loadData() throws InterruptedException {
+        var uniqIds = dbServiceGood.findUniqOuterIds();
+        var latch = new CountDownLatch(uniqIds.size());
+        uniqIds.forEach(id -> {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    loadGoodData(id);
+                } catch (Exception ex) {
+                    log.info("load data of {} ", id, ex);
+                } finally {
+                    latch.countDown();
+                }
+            }, threadPool);
+        });
+        latch.await();
+    }
+
+    private void loadGoodData(long id) throws IOException {
         var goodInfoOptional = dbServiceGoodInfo.findByOuterId(id);
 
         GoodInfo.GoodInfoBuilder goodInfo;

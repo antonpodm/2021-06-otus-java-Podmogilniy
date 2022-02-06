@@ -19,7 +19,7 @@ public class ParsedRemoveCommand extends ParsedCommand {
         try {
             outerId = Long.valueOf(strings[0]);
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 }

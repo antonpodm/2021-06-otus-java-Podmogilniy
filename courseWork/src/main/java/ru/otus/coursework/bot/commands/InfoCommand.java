@@ -8,7 +8,7 @@ import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandFormatException;
 import ru.otus.coursework.exceptions.GoodsInfoNotFoundException;
-import ru.otus.coursework.toolbox.BotHelper;
+import ru.otus.coursework.bot.toolbox.BotHelper;
 
 public class InfoCommand extends ServiceCommand{
 

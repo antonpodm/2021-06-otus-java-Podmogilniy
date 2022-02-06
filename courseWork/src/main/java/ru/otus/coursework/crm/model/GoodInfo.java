@@ -2,6 +2,7 @@ package ru.otus.coursework.crm.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Table("goods_info")
 @Getter
 @Builder(toBuilder = true)
+@ToString
 public class GoodInfo {
     @Id
     private Long id;

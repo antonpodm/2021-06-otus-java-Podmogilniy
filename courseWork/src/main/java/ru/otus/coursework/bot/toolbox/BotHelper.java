@@ -1,4 +1,4 @@
-package ru.otus.coursework.toolbox;
+package ru.otus.coursework.bot.toolbox;
 
 import org.telegram.telegrambots.meta.api.objects.User;
 

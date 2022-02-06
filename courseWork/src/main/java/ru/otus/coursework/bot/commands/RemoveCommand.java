@@ -8,7 +8,7 @@ import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandFormatException;
 import ru.otus.coursework.exceptions.GoodNotFoundException;
-import ru.otus.coursework.toolbox.BotHelper;
+import ru.otus.coursework.bot.toolbox.BotHelper;
 
 public class RemoveCommand extends ServiceCommand {
     private static final String COMMAND_TEXT = "Товар удалён. Для отображения списка Ваших товаров напишите боту " + Commands.GOODS_LIST.getCommand();

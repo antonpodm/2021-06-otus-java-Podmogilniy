@@ -5,7 +5,6 @@ import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.enums.DealType;
 import ru.otus.coursework.enums.MathStatement;
 
-
 public class ParsedAddCommand extends ParsedCommand {
 
     private final int PARAMS_AMOUNT = 5;
@@ -34,7 +33,7 @@ public class ParsedAddCommand extends ParsedCommand {
         if (!strings[0].isEmpty()) {
             name = strings[0];
         } else {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 
@@ -42,7 +41,7 @@ public class ParsedAddCommand extends ParsedCommand {
         try {
             outerId = Long.valueOf(strings[1]);
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 
@@ -54,10 +53,10 @@ public class ParsedAddCommand extends ParsedCommand {
             } else if (userDealType.contains("ПР") || userDealType.contains("SELL")) {
                 dealType = DealType.SELL;
             } else {
-                makeException(COMMAND_NAME);
+                makeCommandFormatException(COMMAND_NAME);
             }
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 
@@ -69,10 +68,10 @@ public class ParsedAddCommand extends ParsedCommand {
             } else if (userStatement.contains("МЕ") || userStatement.contains("ЕНЬ") || userStatement.contains("ES")) {
                 mathStatement = MathStatement.LESS;
             } else {
-                makeException(COMMAND_NAME);
+                makeCommandFormatException(COMMAND_NAME);
             }
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 
@@ -80,7 +79,7 @@ public class ParsedAddCommand extends ParsedCommand {
         try {
             price = Long.valueOf(strings[4]);
         } catch (Exception ex) {
-            makeException(COMMAND_NAME);
+            makeCommandFormatException(COMMAND_NAME);
         }
     }
 

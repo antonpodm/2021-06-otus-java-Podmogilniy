@@ -6,11 +6,11 @@ public abstract class ParsedCommand {
 
     protected void checkParamsAmount(String[] strings, int paramsAmount, String commandName) {
         if (strings.length < paramsAmount) {
-            makeException(commandName);
+            makeCommandFormatException(commandName);
         }
     }
 
-    public void makeException(String commandName) {
+    public void makeCommandFormatException(String commandName) {
         throw new CommandFormatException(commandName);
     }
 
