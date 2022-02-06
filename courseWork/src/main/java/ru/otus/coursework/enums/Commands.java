@@ -8,8 +8,8 @@ public enum Commands {
     STOP("/stop", "Остановить трансляцию. Обновления цен товаров не будут приходить Вам от бота.", ""),
     HELP("/help", "Показать справку.", ""),
     ADD_GOOD("/add", "Добавить товар в список Ваших товаров. Формат команды указан ниже. Вы можете комбинировать параметры покупки/продажи с параметрами больше/меньше.",
-            "\nПример команд: \n/add Ягода 607 " + DealType.SELL.getType() + " " + MathStatement.LESS.getDescription() + " 52000 " +
-                    "\n/add Семечко 608 " + DealType.BUY.getType() + " " + MathStatement.MORE.getDescription() + " 20000"
+            "\nПример команд: \n/add Ягода 607 " + DealType.SELL.getDescription() + " " + MathStatement.LESS.getDescription() + " 52000 " +
+                    "\n/add Семечко 608 " + DealType.BUY.getDescription() + " " + MathStatement.MORE.getDescription() + " 20000"
     ),
     REMOVE_GOOD("/remove", "Удалить товар из списка Ваших товаров. ", "\nПример команды: /remove 607"),
     GOODS_LIST("/list", "Показать список Ваших товаров. ", ""),

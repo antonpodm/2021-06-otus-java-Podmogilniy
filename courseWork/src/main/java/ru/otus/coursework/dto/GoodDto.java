@@ -31,7 +31,7 @@ public class GoodDto {
                 .add("с id")
                 .add(outerId + ",")
                 .add("тип сделки")
-                .add(dealType.getType())
+                .add(dealType.getDescription())
                 .add(mathStatement.getDescription())
                 .add(price + ".").toString();
     }

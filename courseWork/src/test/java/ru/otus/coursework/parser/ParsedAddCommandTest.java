@@ -29,7 +29,7 @@ public class ParsedAddCommandTest {
         var parsedCommand = new ParsedAddCommand(rightFormatCommand);
         Assertions.assertEquals(NAME, parsedCommand.getName());
         Assertions.assertEquals(Long.valueOf(ID), parsedCommand.getOuterId());
-        Assertions.assertEquals(DealType.findByType(DEAL_TYPE).get(), parsedCommand.getDealType());
+        Assertions.assertEquals(DealType.findByDescription(DEAL_TYPE).get(), parsedCommand.getDealType());
         Assertions.assertEquals(MathStatement.findByDescription(MATH_STATEMENT).get(), parsedCommand.getMathStatement());
         Assertions.assertEquals(Long.valueOf(PRICE), parsedCommand.getPrice());
     }

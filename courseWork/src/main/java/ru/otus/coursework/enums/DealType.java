@@ -10,15 +10,15 @@ public enum DealType {
     SELL("Продажа"),
     BUY("Покупка");
 
-    private final String type;
+    private final String description;
 
     DealType(String type) {
-        this.type = type;
+        this.description = type;
     }
 
-    public static Optional<DealType> findByType(String type){
+    public static Optional<DealType> findByDescription(String description){
         return Arrays.stream(DealType.values())
-                .filter(dealType -> dealType.getType().equals(type))
+                .filter(dealType -> dealType.getDescription().equals(description))
                 .findFirst();
     }
 }

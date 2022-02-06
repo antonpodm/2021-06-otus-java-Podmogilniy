@@ -31,7 +31,7 @@ public class MessageDto {
     public String toString() {
         var joiner = new StringJoiner("\n");
         joiner.add("Название товара " + name);
-        joiner.add(dealType.getType());
+        joiner.add(dealType.getDescription());
         for (ShopDto shop : shops) {
             joiner.add(shop.toString());
         }
