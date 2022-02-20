@@ -8,12 +8,12 @@ import ru.otus.coursework.enums.Commands;
 import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.bot.toolbox.BotHelper;
 
-public class DeleteUserCommand extends ServiceCommand{
+public class DeleteUserCommandHandler extends ServiceCommandHandler {
 
     private static final String COMMAND_TEXT = "Ваш профиль и все его данные были удалены из системы. Для создания профиля напишите боту " + Commands.START.getCommand();
     private final CommandsHandler commandsHandler;
 
-    public DeleteUserCommand(CommandsHandler commandsHandler) {
+    public DeleteUserCommandHandler(CommandsHandler commandsHandler) {
         super(Commands.DELETE_USER);
         this.commandsHandler = commandsHandler;
     }

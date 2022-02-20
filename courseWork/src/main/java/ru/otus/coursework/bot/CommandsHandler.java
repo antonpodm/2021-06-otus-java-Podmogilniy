@@ -19,6 +19,7 @@ import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandAlreadyDoneException;
 import ru.otus.coursework.exceptions.GoodNotFoundException;
 import ru.otus.coursework.exceptions.GoodsInfoNotFoundException;
+import ru.otus.coursework.services.UpdateGoodService;
 
 import java.util.Optional;
 import java.util.StringJoiner;
@@ -30,6 +31,7 @@ public class CommandsHandler {
     private final DBServiceGood dbServiceGood;
     private final DBServiceGoodInfo dbServiceGoodInfo;
     private final DBServiceAppUser dbServiceAppUser;
+    private final UpdateGoodService updateGoodService;
 
     public void handleStartCommand(User tgUser, Chat chat) {
         var userOptional = findUser(tgUser);
@@ -72,9 +74,9 @@ public class CommandsHandler {
         var existingGood = dbServiceGood.findByUserIdAndOuterId(appUser.getId(), parsedCommand.getOuterId());
         Good good;
         if (existingGood.isPresent()) {
-            good = existingGood.get().updateFromCommand(parsedCommand);
+            good = updateGoodService.updateFromAddCommand(existingGood.get(),parsedCommand);
         } else {
-            good = Good.builder().userId(appUser.getId()).build().updateFromCommand(parsedCommand);
+            good = updateGoodService.updateFromAddCommand(Good.builder().userId(appUser.getId()).build(),parsedCommand);
         }
         dbServiceGood.save(good);
     }

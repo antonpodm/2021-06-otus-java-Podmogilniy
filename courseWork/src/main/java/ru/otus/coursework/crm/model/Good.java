@@ -46,13 +46,4 @@ public class Good {
         this.name = name;
     }
 
-    public Good updateFromCommand(ParsedAddCommand parsedAddCommand){
-        this.outerId = parsedAddCommand.getOuterId();
-        this.dealType = parsedAddCommand.getDealType();
-        this.mathStatement = parsedAddCommand.getMathStatement();
-        this.price = parsedAddCommand.getPrice();
-        this.name = parsedAddCommand.getName();
-        return this;
-    }
-
 }

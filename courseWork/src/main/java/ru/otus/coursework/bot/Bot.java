@@ -30,17 +30,6 @@ public class Bot extends TelegramLongPollingCommandBot {
         registerCommands(commandsHandler);
     }
 
-    private void registerCommands(CommandsHandler commandsHandler) {
-        register(new StartCommand(commandsHandler));
-        register(new StopCommand(commandsHandler));
-        register(new AddCommand(commandsHandler));
-        register(new RemoveCommand(commandsHandler));
-        register(new ListCommand(commandsHandler));
-        register(new DeleteUserCommand(commandsHandler));
-        register(new InfoCommand(commandsHandler));
-        register(new HelpCommand());
-    }
-
     @Override
     public String getBotUsername() {
         return name;
@@ -69,13 +58,6 @@ public class Bot extends TelegramLongPollingCommandBot {
         }
     }
 
-    private SendMessage createMessage(String chatId, String message) {
-        var sm = new SendMessage();
-        sm.setChatId(chatId);
-        sm.setText(message);
-        return sm;
-    }
-
     @Override
     public String getBotToken() {
         return token;
@@ -89,6 +71,24 @@ public class Bot extends TelegramLongPollingCommandBot {
     @Override
     public void onUpdatesReceived(List<Update> updates) {
         super.onUpdatesReceived(updates);
+    }
+
+    private void registerCommands(CommandsHandler commandsHandler) {
+        register(new StartCommandHandler(commandsHandler));
+        register(new StopCommandHandler(commandsHandler));
+        register(new AddCommandHandler(commandsHandler));
+        register(new RemoveCommandHandler(commandsHandler));
+        register(new ListCommandHandler(commandsHandler));
+        register(new DeleteUserCommandHandler(commandsHandler));
+        register(new InfoCommandHandler(commandsHandler));
+        register(new HelpCommand());
+    }
+
+    private SendMessage createMessage(String chatId, String message) {
+        var sm = new SendMessage();
+        sm.setChatId(chatId);
+        sm.setText(message);
+        return sm;
     }
 
 }

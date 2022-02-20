@@ -9,13 +9,13 @@ import ru.otus.coursework.exceptions.AppUserNotFoundException;
 import ru.otus.coursework.exceptions.CommandAlreadyDoneException;
 import ru.otus.coursework.bot.toolbox.BotHelper;
 
-public class StopCommand extends ServiceCommand {
+public class StopCommandHandler extends ServiceCommandHandler {
 
     private static final String COMMAND_TEXT = "Вы отписались от рассылки цен товаров. Для возобновления рассылки напишите боту " + Commands.START.getCommand();
     private static final String ERROR_COMMAND_TEXT = "Вы уже отписаны от рассылки. Для возобновления напишите боту " + Commands.START.getCommand();
     private final CommandsHandler commandsHandler;
 
-    public StopCommand(CommandsHandler commandsHandler) {
+    public StopCommandHandler(CommandsHandler commandsHandler) {
         super(Commands.STOP);
         this.commandsHandler = commandsHandler;
     }

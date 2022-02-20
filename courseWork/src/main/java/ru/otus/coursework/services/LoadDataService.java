@@ -20,17 +20,14 @@ import ru.otus.coursework.enums.DealType;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 @Service
 @RequiredArgsConstructor
 public class LoadDataService {
 
     private static final Logger log = LoggerFactory.getLogger(LoadDataService.class);
-    private static final Executor threadPool = Executors.newFixedThreadPool(20);
+    private static final ExecutorService threadPool = Executors.newFixedThreadPool(20);
     private static final String averageLastWeekString = "Average last week: ";
 
     private final DBServiceGood dbServiceGood;
