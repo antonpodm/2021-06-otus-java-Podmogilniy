@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.6.2'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+    implementation('org.projectlombok:lombok')
+    implementation 'org.jetbrains:annotations:22.0.0'
+    annotationProcessor('org.projectlombok:lombok')
+    implementation 'org.telegram:telegrambotsextensions:5.6.0'
+    implementation("ch.qos.logback:logback-classic")
+    implementation('org.jsoup:jsoup:1.14.3')
+
+    implementation("org.postgresql:postgresql")
+    implementation('org.flywaydb:flyway-core')
+
+    implementation('org.springframework.boot:spring-boot-starter-data-jdbc')
+    implementation("org.springframework.boot:spring-boot-starter-test")
+    implementation 'org.telegram:telegrambots-spring-boot-starter:5.6.0'
+
+    implementation("com.google.code.gson:gson:${Versions.gson}")
+    implementation("org.freemarker:freemarker:${Versions.freemarker}")
+
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}
